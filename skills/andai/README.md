@@ -23,6 +23,7 @@ Kedip, Kartu Sumber, dan bank frasa milik sendiri.
 | `templates/` | Templat kosong `brief.yaml`, `fakta.yaml`, `naskah.md` |
 | `templates/contoh-andai-macet/` | Contoh episode pilot lengkap (brief, fakta kosong, naskah, storyboard 39 shot) |
 | `ROADMAP.md` | Keputusan terbuka dan fase pembangunan |
+| `SETUP-SERVER-GPU.md` | Cara menjalankan Claude Code di server GPU dan menyambungkannya lewat Remote Control |
 
 ## Urutan baca
 
