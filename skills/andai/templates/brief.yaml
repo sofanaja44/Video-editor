@@ -1,0 +1,20 @@
+# Brief episode ANDAI. Salin ke episodes/<slug>/brief.yaml lalu isi.
+# Skema lengkap: references/05-skema-data.md
+
+slug: andai-topik                 # huruf kecil-strip
+judul_kerja: "Andai Besok …"
+topik: ""                         # masalah sehari-hari yang "hilang" di Dunia Andai
+kebiasaan_twist: ""               # kebiasaan kecil si Kamu yang muncul di beat TWIST
+aksi_penutup: ""                  # "kalau semua orang mulai dari …"
+preset: standar                   # pendek (±60 dtk) | standar (±90 dtk) | panjang (±150 dtk)
+platform: [tiktok]
+suara:
+  engine: edge                    # edge | premium | rekaman
+  id: id-ID-ArdiNeural
+  kecepatan: "+0%"
+musik:
+  pakai: false
+  file: null
+  lisensi: null                   # wajib diisi jika pakai: true
+handle: ""
+catatan: ""

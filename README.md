@@ -40,3 +40,10 @@ Struktur:
 - `motion/fx.py` — easing, color grade, hujan, bloom, glitch, speed lines, petir, light leak.
 - `motion/sfx.py` — sound effect sintetis dan mixing audio.
 - `assets/fonts/` — Anton, Bangers, Montserrat, JetBrains Mono (SIL Open Font License).
+
+## Skill ANDAI (rancangan)
+
+Folder [`skills/andai/`](skills/andai/README.md) berisi rancangan skill Claude untuk video kartun narasi
+berformat "Andai besok pagi kamu bangun, dan [masalah] hilang.": Buku Panduan, bedah video referensi,
+bible karakter/set, arsitektur engine, skema data, checklist QA, templat, dan contoh episode pilot.
+Engine render-nya belum dibangun; urutan pembangunan ada di `skills/andai/ROADMAP.md`.

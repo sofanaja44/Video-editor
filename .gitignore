@@ -1,3 +1,6 @@
 __pycache__/
 output/preview/
 output/*.wav
+episodes/*/audio/
+episodes/*/build/
+episodes/*/output/

@@ -1,0 +1,19 @@
+# Fakta episode ANDAI. Satu entri per angka yang diucapkan atau ditampilkan.
+# Tidak boleh ada [[PERLU SUMBER]] saat Gerbang 1 disetujui. Skema: references/05-skema-data.md
+
+- id: F1
+  klaim: ""
+  angka: "[[PERLU SUMBER]]"       # bentuk digit untuk prop, mis. "Rp2,3 T", "34/100"
+  ucapan: null                    # bentuk kata untuk naskah, mis. "dua koma tiga triliun rupiah"
+  satuan: ""
+  sumber:
+    lembaga: null
+    judul: null
+    tahun: null
+    url: null
+    diakses: null                 # YYYY-MM-DD
+  kartu_sumber: null              # teks di layar, mis. "Sumber: <lembaga>, <tahun>"
+  konversi:
+    teks: null                    # bentuk kata, disisipkan lewat {F1.konversi}
+    rumus: null                   # wajib jika teks diisi
+  status: draf                    # draf | terverifikasi

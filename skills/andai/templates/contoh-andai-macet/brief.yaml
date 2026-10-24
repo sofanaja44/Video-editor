@@ -1,0 +1,21 @@
+# Contoh brief: episode pilot ANDAI. Lihat references/05-skema-data.md
+
+slug: andai-macet
+judul_kerja: "Andai Besok Nggak Ada Macet"
+topik: kemacetan kota
+kebiasaan_twist: parkir di bahu jalan
+aksi_penutup: parkir yang benar
+preset: standar
+platform: [tiktok, reels]
+suara:
+  engine: edge
+  id: id-ID-ArdiNeural
+  kecepatan: "+0%"
+musik:
+  pakai: false
+  file: null
+  lisensi: null
+handle: ""
+catatan: >
+  Jangan sebut nama kota tertentu; pakai "kotamu" dan "kota besar kita".
+  Semua angka masih kosong dan wajib dicari sumbernya sebelum Gerbang 1.

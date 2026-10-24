@@ -1,0 +1,46 @@
+# Contoh fakta episode pilot. SENGAJA belum diisi: angka harus dicari dari sumber kredibel
+# (Buku Panduan bab 8). Selama masih [[PERLU SUMBER]], episode ini tertahan di Gerbang 1.
+
+- id: F1
+  klaim: "Waktu yang hilang di jalan karena macet per pengendara per tahun, di kota besar Indonesia."
+  angka: "[[PERLU SUMBER]]"
+  ucapan: null
+  satuan: jam/tahun
+  sumber: {lembaga: null, judul: null, tahun: null, url: null, diakses: null}
+  kartu_sumber: null
+  konversi:
+    teks: null              # mis. "<n> hari penuh tanpa tidur"
+    rumus: null             # mis. "<jam> ÷ 24"
+  status: draf
+
+- id: F2
+  klaim: "Porsi perjalanan harian yang memakai transportasi umum di kota besar Indonesia."
+  angka: "[[PERLU SUMBER]]"
+  ucapan: null
+  satuan: persen perjalanan
+  sumber: {lembaga: null, judul: null, tahun: null, url: null, diakses: null}
+  kartu_sumber: null
+  konversi: {teks: null, rumus: null}
+  status: draf
+
+- id: F3
+  klaim: "Kerugian ekonomi akibat kemacetan per tahun di satu kota besar Indonesia."
+  angka: "[[PERLU SUMBER]]"
+  ucapan: null
+  satuan: rupiah/tahun
+  sumber: {lembaga: null, judul: null, tahun: null, url: null, diakses: null}
+  kartu_sumber: null
+  konversi:
+    teks: null              # mis. "<n> rupiah untuk setiap warganya"
+    rumus: null             # mis. "<kerugian> ÷ <jumlah penduduk kota>"
+  status: draf
+
+- id: F4
+  klaim: "Seberapa besar parkir dan berhenti di badan jalan ikut memperlambat lalu lintas kota."
+  angka: "[[PERLU SUMBER]]"
+  ucapan: null              # bentuk klausa lengkap, disisipkan di "Di dunia nyata, {F4}."
+  satuan: null
+  sumber: {lembaga: null, judul: null, tahun: null, url: null, diakses: null}
+  kartu_sumber: null
+  konversi: {teks: null, rumus: null}
+  status: draf
