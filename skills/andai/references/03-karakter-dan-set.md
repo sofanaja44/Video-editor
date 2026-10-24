@@ -1,6 +1,6 @@
 # Karakter, Set, dan Prop ANDAI
 
-> "Bible" visual versi kita. Engine 3D (three.js, lihat `04-arsitektur-pipeline.md`) membangun semuanya
+> "Bible" visual versi kita. Engine 3D (kini **Blender**, lihat `04-arsitektur-pipeline.md` 2.1) membangun semuanya
 > dari kode memakai parameter di bawah, sehingga tokoh selalu konsisten di setiap episode. Kode tidak boleh
 > menyimpang dari dokumen ini tanpa memperbaruinya dulu. Contoh hasil uji: `img/uji-3d-perbandingan.jpg`.
 
@@ -225,3 +225,55 @@ Pelajaran dari prototipe (`andai/scene3d/prototipe/`):
 - **Bayangan.** Satu cahaya utama dengan `shadow.radius` 4–6 dan `shadow.bias` ±−0,0005; atur kotak
   kamera bayangan seketat mungkin di sekitar area aksi agar tajam.
 - **Kedalaman.** `THREE.Fog` tipis di Dunia Andai, tebal dan keabu-abuan di Dunia Nyata.
+
+## 8. Catatan implementasi Blender (`andai/blender/`)
+
+Penyimpangan kecil dari rancangan three.js di atas, ditemukan saat membangun rig di Blender:
+
+- **Sumbu:** Blender Z-atas. Tokoh menghadap **-Y** (ke kamera). `_L` = kiri tokoh (+X, tampil di kanan layar),
+  `_R` = kanan tokoh (-X). Tabel pose di `poses.py`: sudut anggota badan *positif = ke depan*.
+- **Garis rambut:** rambut bukan potongan lathe dengan tepi rata (y > 0,32), tetapi tudung dengan garis rambut
+  yang tinggi di depan (+0,92) dan turun ke belakang, supaya alis tidak tenggelam di rambut hitam. Tebalnya
+  0,05u (modifier Solidify). Enam gaya: `cepak`, `jambul`, `kuncir`, `keriting`, `bob`, `botak`.
+- **Mata tertutup:** `kelopak` ≥ 0,95 menggepengkan mata sampai garis tipis dan memunculkan **garis lengkung gelap**
+  (∪) di depannya; `tawa` memakai garis lengkung ^ ^ sebagai pengganti mata. Tanpa ini mata tertutup terlihat
+  seperti irisan putih.
+- **Kilau mata:** setiap pupil punya bola kilau putih kecil (skala `kilau`, 1,9 untuk `sedih`).
+- **Lengan:** `lengan: pendek` (Si Kamu, kaos oblong) = lengan atas warna baju, lengan bawah warna kulit.
+- **Pop aksesori:** bagian yang muncul/hilang (keringat, blush, zzz, bintang, garis kejut, mulut yang tidak
+  dipakai) ditukar lewat skala 1 ↔ 0,0001, sehingga bisa di-keyframe dan di-ease seperti objek lain.
+- **Tinggi pinggul otomatis:** `poses.resolve` menghitung tinggi pinggul dari sudut paha dan lutut supaya kaki
+  yang terendah selalu menapak lantai (jalan, duduk).
+- **Figuran:** selain warna dan gaya rambut, `tinggi` (0,92–1,06) dan `lebar` badan (0,9–1,18) diundi dari seed,
+  supaya barisan figuran tidak terlihat seragam.
+
+### 8.1 Peningkatan model (kedua)
+
+- **Telinga, hidung, jempol:** telinga elips pipih dengan bagian dalam lebih gelap (kepala tidak lagi botak dari
+  samping), hidung bulat kecil (`hidung` = skala, 0 untuk tanpa hidung), jempol mitten kecil di tiap telapak.
+- **Alas kaki:** `sandal` = kaki telanjang di atas sol tipis + tali Y (jepit), `sepatu` = kubah bulat + sol terang,
+  `bot` = sepatu + selongsong, `tanpa` = kaki telanjang.
+- **Material:** kulit memakai subsurface (cahaya merembes hangat); kain memakai sheen + butiran halus; rambut sheen
+  + butiran. Motif kain prosedural di ruang objek: `('titik'|'garis'|'kotak'|'ombak', warna2, skala)`.
+- **Warna dan cahaya:** transformasi warna **Khronos PBR Neutral** (bukan AgX) supaya warna palet tetap setia;
+  AgX membuat semuanya pucat. Langit gradasi tiga warna ikut menerangi adegan; lampu isi dan pinggir memakai
+  *spot* (lampu area memotong lantai dengan tepi keras).
+- **Bayi:** `baju=None` dan `celana=None` berarti kulit telanjang; `kepala_skala` 1,4 + `tinggi` 0,5 memberi
+  kepala ±70% badan; `mata_besar`.
+
+### 8.2 Pemeran yang sudah dibangun
+
+| ID | Pembeda utama (kode: `cast.py`) |
+|---|---|
+| `kamu` | Jambul, kaos oranye bata, jeans, sandal jepit hijau |
+| `tetangga` | Kerudung hijau (potongan wajah oval), daster kuning bermotif titik, bulu mata |
+| `petugas` | Seragam krem, dua saku dada, sabuk, tali ID + kartu kosong |
+| `polisi` | Seragam cokelat tua, topi pet, bot hitam, sabuk, dua saku; tanpa lambang |
+| `pejabat` | Jas hitam, kemeja putih + dasi merah, kacamata hitam bundar, kumis, perut bulat, ekspresi `licik` |
+| `peneliti` | Helm proyek kuning, kacamata bulat, rompi oranye dengan pita pantul |
+| `nenek` | Rambut putih disanggul, kacamata, kebaya ungu, kain batik, membungkuk |
+| `bayi` | Kepala besar, popok putih, satu jambul keriting, tanpa baju |
+| `tukang_ban` | Singlet, handuk di leher, topi merah terbalik, noda oli, kulit gelap |
+| `ibu` | Kerudung merah muda, tunik krem longgar, bulu mata |
+
+`warga(n, seed, peran)` = figuran bernomor; `kerumunan(jumlah, sebar, ...)` = banyak figuran sekaligus.

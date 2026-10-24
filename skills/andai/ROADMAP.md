@@ -35,8 +35,26 @@
 ### Fase 3: Engine 3D MVP (Blender, di server RTX 5090)
 - Siapkan server: `bash andai/gpu/setup_server.sh` (cek driver, pasang Blender 5.2.3 LTS, jalankan uji
   render). Catat hasil `andai/gpu/hasil/hasil_uji.txt` ke `04-arsitektur-pipeline.md` bagian 2.1.
+  ✅ Selesai 24 Okt 2026: Cycles GPU (CUDA) ±0,5 dtk/frame di 1080×1920 (wajib `denoising_use_gpu = True`);
+  EEVEE tidak jalan di container ini dan tidak diperlukan.
 - `andai/blender/rig.py` + `cast.py`: Si Kamu + 2 figuran dari skrip, 6 pose, 8 ekspresi, kedip otomatis.
   Simpan sebagai aset `assets/blender/karakter.blend` agar dipakai ulang.
+  ✅ Selesai 24 Okt 2026, lebih dari target: Si Kamu + figuran bernomor tanpa batas (`warga(n, seed)`), **12**
+  ekspresi, 6 pose (berdiri, jalan, duduk, menunjuk, angkat_bahu, pegang), 6 gaya rambut, kedip otomatis,
+  keyframe (pose, ekspresi, tempat, siklus jalan). Karakter dibangun dari kode per shot (<1 dtk), jadi
+  `karakter.blend` tidak dibuat. Uji: `andai/blender/uji_karakter.sh` dan `uji_keyframe.py`. Lihat
+  `andai/blender/README.md`. Belum ada: pose `naik_motor`, `rogoh_saku`, `sodor`, `menulis`, `antre`, `tidur`,
+  `bangun`; tokoh selain Si Kamu dan figuran (Bu Tetangga, polisi, pejabat, dst.).
+  ✅ **Pemeran lengkap** (24 Okt 2026): 10 tokoh bernama (`cast.tokoh(nama)`: kamu, tetangga, petugas, polisi,
+  pejabat, peneliti, nenek, bayi, tukang_ban, ibu) + figuran bernomor dengan peran (`sopir_angkot`, `anak`) +
+  `kerumunan(jumlah, sebar)` (deret, lajur_penuh, antre_lajur, serobot_lajur, acak). Sistem kostum `kostum.py`
+  (rok, kerudung, topi, helm, kacamata, jas+dasi, rompi, saku, sabuk, handuk, popok, dst.). Peningkatan model:
+  telinga, hidung, jempol, sandal jepit bertali, kulit SSS, kain bertekstur dan bermotif.
+  ✅ **Cahaya dan efek** (`lights.py`, `fx.py`): 4 waktu (pagi/siang/sore/malam), DOF, motion blur, kabut,
+  debu melayang, bloom. Terukur: adegan ramai 28 figuran + semua efek 4,3 dtk/frame (1080×1920, 64 sampel).
+  ✅ **Ketahanan server:** `andai/gpu/gpu.sh` + `PINDAH-SERVER.md` (server GPU boleh mati; aset di server utama).
+  Belum ada: set, prop, `camera.py`, `shot.py`, `composite/grade.py`, `transitions.py`, efek `sinar_jendela`,
+  `hujan`, `uap_kopi`, `bintang_kilau`, `retak`, `asap_knalpot`.
 - `andai/blender/sets/`: 5 set (`kamar`, `jalan_raya`, `halte`, `jalan_malam`, `dapur`).
 - `andai/blender/props/`: 8 prop (`led`, `kalender`, `label_harga`, `angka_raksasa`, `jam_dinding`,
   `motor`, `mobil`, `lampu_lalu_lintas`), tulisan memakai objek teks Blender dengan font Fredoka.
