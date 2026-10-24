@@ -1,8 +1,10 @@
 __pycache__/
-output/preview/
-output/*.wav
+andai/blender/hasil*/
+andai/gpu/gpu.env
+andai/gpu/hasil/
 episodes/*/audio/
 episodes/*/build/
 episodes/*/output/
 node_modules/
-andai/gpu/hasil/
+output/*.wav
+output/preview/
