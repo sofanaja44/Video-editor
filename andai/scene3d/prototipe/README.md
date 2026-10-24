@@ -22,5 +22,14 @@ Hasil ukur di container sesi Claude (4 core CPU, tanpa GPU):
 
 Hasil visual: `skills/andai/references/img/uji-3d-perbandingan.jpg`.
 
+Pembanding Blender (`blender_scene.py`, adegan yang sama). Di mesin dengan GPU NVIDIA:
+
+```bash
+python -m venv venv && ./venv/bin/pip install bpy      # atau pakai aplikasi Blender: blender -b --python blender_scene.py -- …
+./venv/bin/python blender_scene.py BLENDER_EEVEE "$PWD/eevee.jpg" 0
+./venv/bin/python blender_scene.py CYCLES "$PWD/cycles_gpu.jpg" 16 GPU
+./venv/bin/python blender_scene.py CYCLES "$PWD/cycles_cpu.jpg" 16 CPU
+```
+
 Ini prototipe, bukan engine. Struktur engine yang sebenarnya ada di
 `skills/andai/references/04-arsitektur-pipeline.md` bagian 3.
