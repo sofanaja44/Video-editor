@@ -12,6 +12,7 @@ timestamp per kata.
 | Ukuran | Nilai |
 |---|---|
 | Durasi file | 160,3 dtk (155 dtk narasi + ±4 dtk outro bawaan platform) |
+| Medium | **3D sungguhan** (bukan 2.5D): perspektif berubah saat kamera bergerak, tokoh bisa menoleh/berputar, ada bayangan jatuh, sorot lampu, dan fokus kamera (latar kabur). Kemungkinan dibuat di software 3D; tokoh konsisten dan tulisan di adegan selalu tajam. Software persisnya tidak bisa dipastikan dari video. |
 | Resolusi / fps | 576×1024 (9:16), 30 fps, H.264 |
 | Audio | AAC 44,1 kHz stereo 128 kbps |
 | Loudness | −14,1 LUFS terintegrasi, LRA 3,2 LU (sangat rata, VO dikompres) |
@@ -99,6 +100,7 @@ mengingatkan bahwa angka di video viral pun perlu diverifikasi.
 | Angka hanya di prop, caption tetap kata | Buku Panduan 4.4 dan 6.2 |
 | Tidak ada sumber di layar | Kita tambah Kartu Sumber (6.4) |
 | Tokoh tidak lip-sync | Engine tidak perlu lip-sync; cukup ekspresi (lebih murah dibangun) |
+| Medium 3D | Engine kita juga 3D, dibangun sepenuhnya dari kode (three.js), dengan desain tokoh sendiri |
 | Hampir tanpa musik | Musik opsional; prioritas VO dan SFX |
 | Shot 2–3 dtk, dijangkarkan ke kata | Storyboard menjangkarkan shot ke kata, bukan detik (`05-skema-data.md`) |
 | Loop kamar tidur | Buku Panduan 5.3 |

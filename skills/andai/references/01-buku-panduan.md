@@ -60,7 +60,7 @@ Yang kita **ganti**: semua aset dan identitas.
 
 | Aspek | Video referensi | ANDAI (versi kita) |
 |---|---|---|
-| Gaya gambar | Render 3D, kepala bola, kaki-tangan lidi | **Kartun 2.5D "kertas tebal"**: bentuk vektor, gradien lembut untuk volume, bayangan kontak, parallax berlapis. Dirender oleh engine Python kita (lihat `04-arsitektur-pipeline.md`). |
+| Gaya gambar | Render 3D (kemungkinan dibuat di software 3D), kepala bola, kaki-tangan lidi | **3D dari kode, gaya "mainan doff"**: dibangun dari bentuk dasar lewat three.js, material doff, bayangan lembut. Semua adegan ditulis sebagai kode, tanpa software 3D manual (lihat `04-arsitektur-pipeline.md`). |
 | Tokoh utama | Kaos hijau toska, rambut cokelat | **Si Kamu**: kepala "kacang", jambul hitam, kaos oranye bata, sandal jepit (lihat `03-karakter-dan-set.md`). |
 | Pindah dunia | Hanya lewat perubahan warna | **Transisi Kedip**: kelopak mata hitam menutup dari atas-bawah lalu membuka dengan *grade* dunia lain, ditambah bunyi "tik" jam. Nyambung dengan tema bangun tidur. |
 | Caption | Putih polos per kata | Putih per kata, **angka dan kata kunci jadi kuning** dengan pop kecil. |
@@ -164,11 +164,13 @@ Twist dan Loop **MUST** ada di semua preset. Yang dipangkas adalah jumlah siklus
 
 ### 4.1 Gaya gambar
 
-- Kartun 2.5D: bentuk vektor sederhana, gradien radial untuk volume, *rim light* tipis, bayangan kontak
-  elips di bawah kaki/benda, butiran halus (grain) di seluruh frame.
-- Garis tepi tipis dengan warna lebih gelap dari isinya (bukan hitam pekat).
-- Latar 3–4 lapis (langit, latar belakang, tengah, depan) yang bergerak dengan kecepatan berbeda saat
-  kamera bergerak (parallax).
+- **3D sungguhan yang dibangun dari kode**: tokoh, set, dan prop disusun dari bentuk dasar (bola, kapsul,
+  silinder, lathe) dengan sudut membulat. Contoh hasil uji: `img/uji-3d-perbandingan.jpg`.
+- Material doff seperti mainan (roughness 0,45–0,8), tanpa garis tepi.
+- Satu cahaya utama (matahari, bulan, atau lampu) dengan bayangan lembut, ditambah cahaya lingkungan tipis
+  supaya bayangan tidak hitam pekat.
+- Kabut untuk kedalaman; butiran halus (grain) di seluruh frame ditambahkan di tahap komposit.
+- Kamera bebas bergerak di ruang 3D, jadi parallax dan perubahan perspektif muncul dengan sendirinya.
 - Semua tulisan di dunia cerita memakai font bulat tebal yang sama (lihat 6.1) supaya terasa satu dunia.
 
 ### 4.2 Dua dunia
@@ -192,6 +194,9 @@ Dunia ditandai oleh *grade* warna. Penonton harus tahu sedang di dunia mana **ta
 ### 4.3 Waktu hari
 
 Waktu memberi tahu penonton posisi dalam cerita. Grade dunia ditumpuk di atas grade waktu.
+
+Di engine 3D, waktu diatur lewat preset cahaya: arah dan warna matahari/bulan, warna langit, serta lampu
+yang menyala di malam hari.
 
 | Waktu | Cahaya utama | Langit | Catatan |
 |---|---|---|---|
@@ -281,7 +286,8 @@ Kanvas 1080×1920. UI TikTok/Reels menutupi pinggir layar.
 | Geser samping | `truck` | 3–5% lebar frame | Deretan benda/orang, parallax terasa |
 | Geser vertikal | `tilt` | 8–12% tinggi frame | Mengungkap langit, gedung, tumpukan tinggi |
 | Sudut rendah | `rendah` | Kamera di bawah, sedikit menengadah | Momen "keren" di Dunia Andai, angka raksasa |
-| Close-up reaksi | `cu` | Zoom 1,4–1,8 ke wajah | Reaksi lucu, twist |
+| Orbit | `orbit` | Memutar 5–15° mengelilingi target | Memperlihatkan bentuk 3D benda/tokoh; adegan Andai yang santai |
+| Close-up reaksi | `cu` | Zoom 1,4–1,8 ke wajah (lensa 50–85 mm) | Reaksi lucu, twist |
 | Whip pan | `whip` | Blur gerak 6–8 frame | Pindah lokasi/waktu dalam dunia yang sama |
 | Goyang halus | `shake` | 2–4 px | Kejutan (retak, angka kerugian muncul) |
 

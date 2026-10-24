@@ -125,12 +125,12 @@ Aturan format:
 | `beat` | ya | Kode beat dari naskah |
 | `anchor` | ya | Kata tempat shot dimulai: `kalimat` (ID) + `kata` (indeks mulai 0) + `teks` (opsional, kata itu tanpa tanda baca, untuk validasi). Shot pertama wajib `K01` kata 0. |
 | `dunia`, `waktu` | ya | Menentukan grade |
-| `set` | ya | ID dari pustaka set, atau `{"plate": "assets/plates/x.png"}` untuk jalur B |
-| `cast[]` | tidak | `id`, `pose`, `ekspresi`, `titik` atau `pos` [x, y] (0–1), `skala`, `hadap` (kiri/kanan), `pegang` (ID prop), `peran` (untuk figuran), `jumlah` + `sebar` (untuk `warga_n`), `aksi[]` (perubahan pada kata tertentu: `di_kata` + `ekspresi`/`pose`/`anim`) |
+| `set` | ya | ID dari pustaka set (`03-karakter-dan-set.md` bagian 5) |
+| `cast[]` | tidak | `id`, `pose`, `ekspresi`, `titik` (titik bernama di set) atau `pos` [x, z] dalam meter di lantai set, `skala`, `hadap` (kiri/kanan), `pegang` (ID prop), `peran` (untuk figuran), `jumlah` + `sebar` (untuk `warga_n`), `aksi[]` (perubahan pada kata tertentu: `di_kata` + `ekspresi`/`pose`/`anim`) |
 | `props[]` | tidak | `id` prop + parameternya (`teks`, `nilai`, …), `titik`/`pos`, `muncul_di_kata` |
 | `data` | tidak | `{"fakta": "F1", "bagian": "angka", "prop": "led", "muncul_di_kata": 4}`: prop yang menampilkan angka fakta + Kartu Sumber. `bagian`: `angka` (default) atau `konversi`. |
 | `efek[]` | tidak | Efek lingkungan |
-| `kamera` | ya | `gerak` (Buku Panduan 4.8) + parameter (`zoom`, `geser`, `target`) |
+| `kamera` | ya | `gerak` (Buku Panduan 4.8) + parameter (`zoom`, `geser`, `target`, `sudut`, `orbit` derajat, `lensa` mm). `zoom` dan `geser` adalah ukuran relatif yang diterjemahkan engine ke gerak kamera 3D. |
 | `transisi_masuk` | ya | `cut` / `dissolve` / `whip` / `kedip`. Wajib `kedip` jika `dunia` berbeda dari shot sebelumnya. |
 | `sfx[]` | tidak | `id`, `mulai` (`awal` atau `{"kata": n}`), `level` (dB relatif) |
 | `catatan` | tidak | Bebas. Awali `pun:` untuk pun visual. |

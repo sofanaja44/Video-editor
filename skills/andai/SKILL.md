@@ -6,7 +6,8 @@ description: Membuat video kartun narasi vertikal (TikTok/Reels/Shorts) berforma
 # ANDAI: video kartun narasi "dunia seandainya"
 
 > **Status: DRAF.** Dokumen panduan dan skema sudah lengkap; engine (`python -m andai …`) belum
-> dibangun. Sampai engine ada, jalankan Tahap 0–3 (sampai storyboard), lalu beri tahu pengguna bahwa
+> dibangun. Visualnya 3D yang dibangun dari kode (three.js); prototipenya ada di
+> `andai/scene3d/prototipe/`. Sampai engine ada, jalankan Tahap 0–3 (sampai storyboard), lalu beri tahu pengguna bahwa
 > tahap audio dan render belum tersedia. Lihat `ROADMAP.md`.
 
 ## Konsep singkat

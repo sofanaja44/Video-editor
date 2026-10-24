@@ -1,7 +1,8 @@
 # Arsitektur Pipeline ANDAI
 
-> Rancangan teknis engine yang akan dipakai skill. Status: **rancangan**, belum diimplementasikan.
-> Urutan pembangunan ada di `../ROADMAP.md`.
+> Rancangan teknis engine yang akan dipakai skill. Status: **rancangan + prototipe 3D**. Prototipe yang
+> membuktikan render 3D dari kode ada di `andai/scene3d/prototipe/`. Urutan pembangunan ada di
+> `../ROADMAP.md`.
 
 ## 1. Gambaran besar
 
@@ -26,8 +27,12 @@
      ▼
  [6] TIMELINE ───────► timeline.json       (storyboard × words → frame)
      │
-     ├──► [7] RENDER VISUAL ──► frame (set + tokoh + prop + kamera + grade + transisi)
-     ├──► [8] OVERLAY ────────► caption, gelembung, Kartu Sumber
+     ├──► [7] RENDER 3D ──────► build/shots/Sxx.mp4   (three.js di Chromium headless, per shot, di-cache)
+     │              │
+     │              ▼
+     │    [8] KOMPOSIT ───────► grade dunia/waktu, transisi (Kedip, dissolve, whip),
+     │                          caption, gelembung, Kartu Sumber            (Python)
+     │
      └──► [9] MIX AUDIO ──────► audio/mix.wav (VO + SFX + musik, −14 LUFS)
                     │
                     ▼
@@ -43,23 +48,43 @@ Prinsip:
    lalu melanjutkan dari tahap mana pun.
 2. **Shot dijangkarkan ke kata, bukan ke detik.** Ganti suara atau ubah kalimat → timeline dihitung
    ulang otomatis, storyboard tidak perlu disentuh.
-3. **Deterministik.** Input dan seed yang sama menghasilkan video yang sama (figuran, kedip, grain).
-4. **Preview dulu, render penuh belakangan.** Mode preview 540×960, 15 fps untuk cek cepat.
+3. **Dunia 3D dan overlay dipisah.** Render 3D (mahal) di-cache per shot. Overlay dan grade (murah)
+   dikerjakan di tahap komposit, jadi memperbaiki caption atau grade tidak perlu render 3D ulang.
+4. **Deterministik.** Input dan seed yang sama menghasilkan video yang sama. Waktu animasi 3D dikendalikan
+   per frame oleh runner, bukan oleh jam browser.
+5. **Preview dulu, render penuh belakangan.** Mode preview 540×960, 15 fps.
 
 ## 2. Keputusan teknis
 
-### 2.1 Sumber visual (keputusan terbuka #1)
+### 2.1 Sumber visual: 3D dari kode ✅ (diputuskan)
 
-| Jalur | Cara | Kelebihan | Kekurangan |
-|---|---|---|---|
-| **A. Engine 2.5D prosedural** (rekomendasi MVP) | Set, tokoh, dan prop digambar kode Python dari parameter `03-karakter-dan-set.md` | Sepenuhnya otomatis di dalam sesi Claude; tokoh 100% konsisten; render cepat; tanpa biaya API; "versi kita" yang jelas beda dari 3D referensi | Latar lebih sederhana; pustaka set/prop perlu dibangun bertahap |
-| **B. Plate AI + engine** | Latar dibuat model gambar (pengguna mengunggah atau via API), tokoh/prop/teks tetap dari engine | Latar lebih kaya dan detail | Butuh alat luar; gaya latar bisa tidak konsisten; ada biaya |
-| **C. 3D (Blender)** | Tokoh primitif 3D dirender Blender | Paling dekat dengan referensi | Render sangat berat di container tanpa GPU (jam per episode); kompleksitas tinggi |
+Video referensi adalah render 3D sungguhan. Pengguna memilih **3D yang dibangun sepenuhnya lewat kode**.
+Tiga cara sudah diuji di container sesi Claude (4 core CPU, tanpa GPU), memakai adegan uji yang sama
+(Si Kamu di jalan depan rumah):
 
-**Rekomendasi:** bangun jalur A sebagai inti. Desain modul `set` agar satu set bisa berupa gambar plate
-(jalur B) tanpa mengubah bagian lain, sehingga B bisa ditambahkan kapan saja. Jalur C tidak dikejar.
+| Cara | Hasil uji | Waktu per frame 1080×1920 | Episode 90 dtk (2.700 frame) | Status |
+|---|---|---|---|---|
+| **three.js di Chromium headless** (WebGL lewat SwiftShader) | Berhasil. Bayangan lembut, cahaya lingkungan, tone mapping | 0,93 dtk (tanpa AO) · 2,9 dtk (dengan ambient occlusion GTAO) | ±42 menit · ±2 jam 10 menit | **Dipilih** |
+| Blender `bpy`, mesin Cycles (CPU, 16 sampel + denoise) | Berhasil, cahaya paling lembut | 31 dtk | ±23 jam | Terlalu lambat di sini |
+| Blender `bpy`, mesin EEVEE | Gagal: butuh GPU/EGL | — | — | Tidak bisa di container |
 
-### 2.2 Suara (keputusan terbuka #2)
+Perbandingan visual: `img/uji-3d-perbandingan.jpg`.
+
+**Alasan memilih three.js:**
+- Satu-satunya yang realistis dijalankan otomatis di dalam sesi Claude.
+- Playwright + Chromium sudah terpasang di environment; three.js cukup `npm install`.
+- Tulisan di prop (LED, kalender, label harga) bisa digambar persis memakai `CanvasTexture` dengan font
+  Fredoka, sehingga angka selalu cocok dengan `fakta.yaml`.
+- Rig tokoh dari primitif (bola, kapsul, lathe) cocok dengan gaya kartun yang dituju.
+
+**Blender tetap jadi opsi masa depan** untuk kualitas lebih tinggi bila render dijalankan di komputer
+pengguna yang punya GPU (EEVEE bisa < 1 dtk/frame di GPU). Untuk itu, deskripsi adegan disimpan sebagai
+data (storyboard + pustaka set/prop), bukan terkunci ke API three.js.
+
+Catatan: angka di atas diukur pada adegan uji yang sederhana. Adegan nyata dengan lebih banyak objek
+dan figuran akan lebih lambat; ukur ulang di Fase 3.
+
+### 2.2 Suara
 
 | Opsi | Alat | Catatan |
 |---|---|---|
@@ -86,24 +111,59 @@ Langkah:
 Catatan teknis dari uji: versi `av` terbaru tidak cocok dengan `faster_whisper.decode_audio`; muat WAV
 sendiri dengan `wave` + `numpy` lalu kirim array float32 16 kHz ke `transcribe()`.
 
-### 2.4 Render
+### 2.4 Render 3D (three.js)
 
-- Python + NumPy + OpenCV + Pillow, memakai ulang modul yang sudah ada di repo:
-  - `motion/text.py`: `text_sprite`, `blit` (komposit alfa dengan skala/rotasi), `supersample`
-  - `motion/fx.py`: easing (`ease_out_cubic`, `back_out`, `spring`, …), `grade`, `vignette`, `grain_bank`,
-    `bloom`, `motion_blur`, `flash`, `glitch`
-  - `motion/sfx.py`: `whoosh`, `pop`, `impact`, `riser`, `sparkle`, `mix`
-- Tokoh dan prop digambar sebagai sprite vektor dengan supersampling 2–3× lalu di-cache per
-  (tokoh, pose, ekspresi). Animasi kecil (kedip, alis) memakai sprite fitur wajah terpisah.
-- Frame dirender paralel (`multiprocessing`, seperti `render.py` sekarang) lalu disalurkan ke `ffmpeg`
-  lewat pipe.
+Cara kerja yang sudah terbukti di prototipe:
+
+1. Runner Node (`runner.js`) membuka Chromium headless lewat Playwright dengan flag
+   `--use-angle=swiftshader --enable-unsafe-swiftshader --ignore-gpu-blocklist`.
+2. Halaman adegan memuat three.js dari `node_modules` (dilayani lewat `page.route`, tanpa server).
+3. Halaman menyediakan `window.renderFrame(t)`: mengatur pose, ekspresi, kamera, dan prop untuk waktu `t`,
+   lalu me-render satu frame.
+4. Runner memanggil `renderFrame` untuk setiap frame, mengambil screenshot JPEG, dan menyalurkannya ke
+   `ffmpeg` (`image2pipe`) → `build/shots/Sxx.mp4`.
+5. Setiap shot dirender dengan **handle** (frame tambahan di awal dan akhir) untuk transisi dissolve/Kedip.
+6. Cache: nama file shot = hash dari (spesifikasi shot, durasi, versi pustaka). Shot yang tidak berubah
+   tidak dirender ulang.
+
+Pengaturan render bawaan:
+- `MeshStandardMaterial` (roughness 0,45–0,8) agar terlihat seperti mainan/plastik doff.
+- `HemisphereLight` + satu `DirectionalLight` (matahari/bulan) dengan `PCFSoftShadowMap`, peta bayangan
+  2048 px.
+- Cahaya lingkungan `RoomEnvironment` (PMREM), intensitas 0,4–0,5.
+- Tone mapping ACES Filmic, color space sRGB.
+- Kabut (`THREE.Fog`) untuk kedalaman, terutama di Dunia Nyata.
+- Ambient occlusion (`GTAOPass`) hanya di mode `final-hq`.
+
+Mode render:
+
+| Mode | Resolusi | fps | AO | Terukur di prototipe | Perkiraan episode 90 dtk |
+|---|---|---|---|---|---|
+| `preview` | 540×960 | 15 | tidak | 0,41 dtk/frame | ±9 menit |
+| `final` | 1080×1920 | 30 | tidak | 0,93 dtk/frame | ±42 menit |
+| `final-hq` | 1080×1920 | 30 | GTAO | 2,9 dtk/frame | ±2 jam 10 menit |
+
+Menjalankan beberapa browser paralel hampir tidak menambah kecepatan (SwiftShader sudah memakai semua
+core). Penghematan terbesar datang dari cache per shot dan preview.
+
+### 2.5 Komposit (Python)
+
+Memakai ulang modul yang sudah ada di repo:
+- `motion/fx.py`: easing (`ease_out_cubic`, `back_out`, `spring`, …), `grade`, `vignette`, `grain_bank`,
+  `bloom`, `motion_blur`, `flash`.
+- `motion/text.py`: `text_sprite`, `blit` (komposit alfa dengan skala/rotasi) untuk caption, gelembung,
+  dan Kartu Sumber.
+- `motion/sfx.py`: `whoosh`, `pop`, `impact`, `riser`, `sparkle`, `mix`.
+
+Urutan per frame: ambil frame shot (+ shot berikutnya saat transisi) → grade waktu → grade dunia →
+transisi → grain/vignette → overlay (caption, gelembung, Kartu Sumber; tidak ikut di-grade) → ffmpeg.
 
 ## 3. Struktur repo (rencana)
 
 ```
 Video-editor/
-├── motion/                      # sudah ada; dipakai ulang
-├── andai/                       # engine baru (paket Python)
+├── motion/                      # sudah ada; dipakai ulang untuk komposit
+├── andai/                       # engine baru
 │   ├── cli.py                   # perintah `python -m andai …`
 │   ├── project.py               # baca/tulis file episode, validasi skema
 │   ├── vo/
@@ -112,27 +172,32 @@ Video-editor/
 │   ├── plan/
 │   │   ├── naskah.py            # parser naskah.md → kalimat, kata, sorotan, tag fakta
 │   │   └── timeline.py          # storyboard + words → timeline
-│   ├── scene/
-│   │   ├── rig.py               # tokoh: proporsi, pose, ekspresi, kedip
-│   │   ├── cast.py              # definisi pemeran (dari 03-karakter-dan-set.md)
-│   │   ├── sets.py              # pustaka set berlapis (+ dukungan plate)
-│   │   ├── props.py             # prop data dan benda
-│   │   └── camera.py            # push_in, pull_out, truck, cu, whip, shake, parallax
-│   ├── look/
+│   ├── scene3d/                 # dunia 3D (JavaScript + three.js)
+│   │   ├── package.json
+│   │   ├── prototipe/           # ✅ sudah ada: uji kelayakan satu adegan
+│   │   ├── runner.js            # Playwright: render satu shot → mp4, dengan cache
+│   │   ├── shot.html            # halaman render: baca spesifikasi shot, sediakan renderFrame(t)
+│   │   └── src/
+│   │       ├── rig.js           # tokoh: kepala lathe, kapsul, sendi, ekspresi, kedip
+│   │       ├── cast.js          # definisi pemeran (dari 03-karakter-dan-set.md)
+│   │       ├── sets/            # satu file per set (kamar.js, jalan_raya.js, …)
+│   │       ├── props/           # prop benda + prop data (CanvasTexture untuk tulisan)
+│   │       ├── lights.js        # preset cahaya per waktu (pagi/siang/sore/malam)
+│   │       ├── camera.js        # push_in, pull_out, truck, tilt, orbit, cu, rendah, shake
+│   │       └── materials.js     # palet + material standar
+│   ├── composite/
 │   │   ├── grade.py             # preset dunia (andai/nyata/netral) × waktu
-│   │   └── transitions.py       # cut, dissolve, whip, kedip
-│   ├── overlay/
+│   │   ├── transitions.py       # cut, dissolve, whip, kedip
 │   │   ├── caption.py           # caption per kata
 │   │   ├── bubble.py            # gelembung bicara
 │   │   └── source.py            # Kartu Sumber
 │   ├── audio/
 │   │   └── mix.py               # VO + SFX + musik, ducking, loudnorm
-│   ├── render.py                # loop frame, paralel, pipe ke ffmpeg
+│   ├── render.py                # orkestrasi: render3d per shot → komposit → encode
 │   └── qa.py                    # contact sheet, cek aturan, laporan
 ├── assets/
-│   ├── fonts/                   # + Nunito, Fredoka (OFL)
-│   ├── sfx/                     # SFX rekaman bebas lisensi (opsional)
-│   └── plates/                  # plate latar jalur B (opsional)
+│   ├── fonts/                   # + Nunito, Fredoka (OFL), juga dipakai CanvasTexture
+│   └── sfx/                     # SFX rekaman bebas lisensi (opsional)
 ├── episodes/
 │   └── <slug>/                  # satu folder per episode (lihat 4)
 └── skills/andai/                # skill ini
@@ -153,7 +218,8 @@ episodes/andai-macet/
 │   └── mix.wav           # hasil mix akhir
 ├── timeline.json         # hasil hitung (jangan diedit tangan)
 ├── build/
-│   ├── preview/          # frame preview
+│   ├── shots/            # cache render 3D per shot (S01-<hash>.mp4)
+│   ├── preview/          # frame/video preview
 │   └── qa/               # contact sheet, laporan QA
 └── output/
     ├── andai-macet.mp4
@@ -173,9 +239,10 @@ di-commit.
 | `python -m andai vo <slug> [--engine edge\|premium\|rekaman]` | 4 | `audio/kalimat/*.wav`, `audio/vo.wav` |
 | `python -m andai align <slug>` | 5 | `audio/words.json` |
 | `python -m andai plan <slug>` | 6 | `timeline.json` |
-| `python -m andai animatic <slug>` | 6 | Video kasar: kartu teks per shot + caption + VO (sebelum engine visual ada) |
+| `python -m andai animatic <slug>` | 6 | Video kasar: kartu teks per shot + caption + VO (sebelum engine 3D ada) |
+| `python -m andai shot <slug> S07 [--mode preview]` | 7 | Render satu shot saja untuk dicek |
 | `python -m andai preview <slug> [--at 12.5 40.2]` | 7–8 | Frame/video 540×960 15 fps |
-| `python -m andai render <slug>` | 7–10 | MP4 final + SRT + cover |
+| `python -m andai render <slug> [--hq]` | 7–10 | MP4 final + SRT + cover |
 | `python -m andai qa <slug>` | 11 | Laporan QA + contact sheet |
 
 ## 6. Algoritma kunci
@@ -192,6 +259,7 @@ validasi: 1,0 ≤ durasi shot ≤ 4,5 dtk (peringatan di luar 1,5–3,5)
 ```
 
 Kata jangkar ditulis sebagai `{"kalimat": "K07", "kata": 3}` (indeks kata ke-3 di kalimat K07, mulai 0).
+`aksi[].di_kata` dan `muncul_di_kata` diubah ke waktu relatif shot, lalu dikirim ke halaman render 3D.
 
 ### 6.2 Caption
 
@@ -204,17 +272,21 @@ untuk setiap kata w di words.json:
 
 ### 6.3 Grade dan Kedip
 
-- Grade = `grade_waktu[waktu]` lalu `grade_dunia[dunia]`, diterapkan per frame setelah semua lapisan
-  dunia dikomposit, **sebelum** overlay (caption, Kartu Sumber tidak ikut di-grade).
+- Cahaya 3D mengikuti `waktu` (arah, warna, dan intensitas matahari; warna langit; lampu menyala di
+  malam hari). Grade dunia (`andai`/`nyata`/`netral`) diterapkan di tahap komposit, sehingga set 3D yang
+  sama bisa tampil sebagai dua dunia hanya dengan grade dan kabut yang berbeda.
+- Kabut Dunia Nyata dikerjakan di 3D (`THREE.Fog` lebih tebal) karena butuh informasi kedalaman.
 - Saat transisi `kedip`, kelopak menutup penuh di frame ke-4 sampai ke-6; grade berganti tepat di frame
   gelap, sehingga perubahan warna tidak terlihat sebagai lompatan.
 
-### 6.4 Kamera dan parallax
+### 6.4 Kamera 3D
 
-- Kamera = (zoom, pan_x, pan_y, rotasi) sebagai fungsi waktu dalam shot, default `push_in` 1,00→1,06
-  dengan `ease_in_out`.
-- Setiap lapisan set punya faktor kedalaman (langit 0,1; belakang 0,35; tengah 0,7; depan 1,15). Geseran
-  kamera dikalikan faktor tersebut sehingga parallax muncul otomatis.
+- Kamera = posisi + target + lensa (mm) sebagai fungsi waktu dalam shot. Default `push_in`: kamera maju
+  ±15% jarak ke target dengan `ease_in_out`.
+- Karena dunia benar-benar 3D, parallax dan perubahan perspektif muncul sendiri.
+- `orbit` (memutar 5–15° mengelilingi target) adalah gerak khas 3D yang tidak mungkin di 2.5D. Pakai
+  untuk adegan yang perlu terasa "hidup" dan memperlihatkan bentuk benda.
+- Close-up (`cu`) memakai lensa lebih panjang (50–85 mm) agar wajah tidak terdistorsi.
 
 ### 6.5 Mix audio
 
@@ -223,33 +295,34 @@ untuk setiap kata w di words.json:
 3. Musik opsional dengan ducking sidechain terhadap VO.
 4. `ffmpeg loudnorm` dua tahap ke −14 LUFS, TP −1 dBTP.
 
-## 7. Target performa
-
-| Mode | Resolusi | fps | Target waktu (episode 90 dtk, 4 core) |
-|---|---|---|---|
-| Animatic | 540×960 | 15 | < 30 dtk |
-| Preview | 540×960 | 15 | < 2 menit |
-| Final | 1080×1920 | 30 | < 10 menit |
-
-## 8. Dependensi
+## 7. Dependensi
 
 ```
+# Python
 numpy, opencv-python-headless, pillow, scipy      # sudah ada di requirements.txt
 pyyaml, jsonschema                                # baca/validasi file episode
 faster-whisper                                    # alignment
 edge-tts                                          # TTS gratis (opsional)
-ffmpeg (sistem)                                   # encode, loudnorm
+
+# Node (andai/scene3d)
+three@0.170.0                                     # mesin 3D
+playwright                                        # sudah terpasang di environment Claude; di mesin lain: npm i playwright
+
+# Sistem
+ffmpeg, Chromium (bawaan Playwright)
 ```
 
 Font tambahan: Nunito, Fredoka (keduanya SIL OFL) ke `assets/fonts/`.
 
-## 9. Risiko dan mitigasi
+## 8. Risiko dan mitigasi
 
 | Risiko | Mitigasi |
 |---|---|
-| Latar prosedural terlihat terlalu sederhana | Investasi di lighting (sinar jendela, bloom, kabut) dan parallax; buka jalur B untuk set yang sulit |
+| Render lambat untuk adegan ramai (banyak figuran) | Cache per shot; preview 540p; instancing (`InstancedMesh`) untuk figuran dan benda berulang; AO hanya di `final-hq` |
+| Tampilan "primitif" terlalu polos | Investasi di cahaya (matahari rendah, lampu malam, cahaya lingkungan), kabut, material doff, detail kecil prop; bandingkan rutin dengan `02-bedah-referensi.md` |
+| Animasi 3D tidak deterministik | Waktu dikendalikan runner per frame; random pakai seed; tidak memakai `requestAnimationFrame` |
+| Font belum termuat saat tulisan prop digambar | Tunggu `document.fonts.ready` sebelum frame pertama |
 | Whisper salah dengar kata | Kata naskah tetap dipakai; whisper hanya memberi waktu. Kata tak cocok diinterpolasi dan ditandai di QA |
 | TTS salah baca singkatan/angka | Naskah wajib angka dalam kata; singkatan dieja ("ka te pe") di naskah ucapan |
 | Fakta salah | Gerbang 1 wajib; Kartu Sumber; `check` menolak `[[PERLU SUMBER]]` |
-| Render lambat | Cache sprite, preview 540p, render paralel |
 | Pustaka set kurang untuk topik baru | Storyboard boleh memakai set terdekat + catatan; set baru ditambahkan per episode |

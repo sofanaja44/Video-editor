@@ -2,10 +2,11 @@
 
 Skill Claude untuk membuat video kartun narasi vertikal berformat **"Andai besok pagi kamu bangun, dan
 [masalah] hilang."** Konsepnya diambil dari video referensi (kartun 3D satire tentang korupsi), lalu
-dibuat ulang sebagai versi kita sendiri: gaya gambar 2.5D, tokoh, transisi Kedip, Kartu Sumber, dan bank
-frasa milik sendiri.
+dibuat ulang sebagai versi kita sendiri: 3D yang dibangun sepenuhnya dari kode (three.js), tokoh, transisi
+Kedip, Kartu Sumber, dan bank frasa milik sendiri.
 
-**Status: Fase 0 (rancangan).** Dokumen lengkap, engine render belum dibangun. Lihat `ROADMAP.md`.
+**Status: Fase 0 (rancangan).** Dokumen lengkap dan prototipe render 3D sudah terbukti jalan
+(`andai/scene3d/prototipe/`). Engine lengkapnya belum dibangun. Lihat `ROADMAP.md`.
 
 ## Isi folder
 
@@ -14,8 +15,9 @@ frasa milik sendiri.
 | `SKILL.md` | Entri skill: kapan dipakai dan alur kerja Claude (draf) |
 | `references/01-buku-panduan.md` | **Buku Panduan**: DNA format, formula naskah, bahasa visual, tempo, caption, audio, etika |
 | `references/02-bedah-referensi.md` | Bedah video referensi: data teknis, peta beat, teknik, pelajaran |
-| `references/03-karakter-dan-set.md` | Bible visual: rig tokoh, ekspresi, pemeran, palet, set, prop, SFX |
-| `references/04-arsitektur-pipeline.md` | Rancangan teknis engine: tahap, keputusan teknis, struktur kode, algoritma |
+| `references/03-karakter-dan-set.md` | Bible visual: rig tokoh 3D, ekspresi, pemeran, palet, set, prop, SFX |
+| `references/04-arsitektur-pipeline.md` | Rancangan teknis engine: tahap, hasil uji 3D (three.js vs Blender), struktur kode, algoritma |
+| `references/img/uji-3d-perbandingan.jpg` | Hasil uji render 3D dari kode: three.js vs Blender Cycles |
 | `references/05-skema-data.md` | Format file episode: brief, fakta, naskah, storyboard, words, timeline |
 | `references/06-qa-checklist.md` | Gerbang persetujuan, checklist QA, kasus uji skill |
 | `templates/` | Templat kosong `brief.yaml`, `fakta.yaml`, `naskah.md` |

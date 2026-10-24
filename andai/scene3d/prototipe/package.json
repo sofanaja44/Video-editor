@@ -1,0 +1,8 @@
+{
+  "name": "andai-scene3d-prototipe",
+  "private": true,
+  "description": "Feasibility prototype for the ANDAI 3D-by-code engine (three.js in headless Chromium).",
+  "dependencies": {
+    "three": "0.170.0"
+  }
+}

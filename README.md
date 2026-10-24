@@ -46,4 +46,6 @@ Struktur:
 Folder [`skills/andai/`](skills/andai/README.md) berisi rancangan skill Claude untuk video kartun narasi
 berformat "Andai besok pagi kamu bangun, dan [masalah] hilang.": Buku Panduan, bedah video referensi,
 bible karakter/set, arsitektur engine, skema data, checklist QA, templat, dan contoh episode pilot.
-Engine render-nya belum dibangun; urutan pembangunan ada di `skills/andai/ROADMAP.md`.
+Visualnya 3D yang dibangun dari kode (three.js di Chromium headless); prototipenya ada di
+`andai/scene3d/prototipe/`. Engine lengkapnya belum dibangun; urutan pembangunan ada di
+`skills/andai/ROADMAP.md`.

@@ -1,58 +1,67 @@
 # Karakter, Set, dan Prop ANDAI
 
-> "Bible" visual versi kita. Engine menggambar semuanya secara prosedural dari parameter di bawah,
-> sehingga tokoh selalu konsisten di setiap episode. Kode tidak boleh menyimpang dari dokumen ini tanpa
-> memperbaruinya dulu.
+> "Bible" visual versi kita. Engine 3D (three.js, lihat `04-arsitektur-pipeline.md`) membangun semuanya
+> dari kode memakai parameter di bawah, sehingga tokoh selalu konsisten di setiap episode. Kode tidak boleh
+> menyimpang dari dokumen ini tanpa memperbaruinya dulu. Contoh hasil uji: `img/uji-3d-perbandingan.jpg`.
 
 ## 1. Prinsip desain
 
 1. **Siluet terbaca di HP.** Tokoh dikenali dari siluet dan warna baju, meski kecil.
 2. **Kepala besar, wajah ekspresif.** Emosi dibawa alis dan mata.
-3. **Dibangun dari bentuk dasar.** Elips, kapsul, kurva. Mudah digambar engine dan mudah dianimasikan.
+3. **Dibangun dari bentuk 3D dasar.** Bola, kapsul, silinder, bentuk putar (lathe). Mudah dibuat lewat kode
+   dan mudah dianimasikan lewat sendi.
 4. **Indonesia sehari-hari.** Sandal jepit, motor bebek, warung, kerudung, kopiah, rumah berpagar.
 5. **Beda dari referensi.** Kepala referensi bola sempurna dengan tangan-kaki lidi. Kepala kita "kacang"
    (lebih lebar di pipi), lengan dan kaki berbentuk kapsul tebal, tangan bulat tanpa jari (mitten).
+6. **Tampilan "mainan doff".** Material agak kasar (roughness 0,45–0,8), bukan plastik mengilap. Semua
+   sudut dibulatkan; tidak ada tepi tajam pada tokoh dan prop kecil.
 
 ## 2. Rig tokoh
 
-### 2.1 Proporsi (satuan `u`, tinggi total 6u)
+### 2.1 Proporsi (satuan `u` = 1 meter di adegan 3D, sumbu Y ke atas, tinggi total ±4,3u)
+
+Gambar di bawah adalah sketsa proporsi. Ukuran persis mengikuti prototipe `andai/scene3d/prototipe/scene.html`.
 
 ```
         ___
-      /     \        Kepala "kacang": lebar 2.1u, tinggi 2.4u
-     | ◉   ◉ |       (bagian pipi 8% lebih lebar dari dahi)
+      /     \        Kepala "kacang": lebar ±2,2u, tinggi 2,5u
+     | ◉   ◉ |       (bagian pipi 12% lebih lebar dari dahi)
      |   ‿   |
       \_____/
         | |          Leher: tidak ada (kepala menempel ke badan)
       /‾‾‾‾‾\
-     |  KAOS |       Badan kapsul: lebar 1.3u, tinggi 1.8u
+     |  KAOS |       Badan kapsul: lebar 1,24u, tinggi 1,94u
       \_____/
-       |   |         Kaki kapsul: 0.32u tebal, 1.8u panjang
-       ◖   ◗         Sandal/sepatu: setengah elips 0.6u
+       |   |         Kaki kapsul: tebal 0,34u, panjang ±1,1u
+       ◖   ◗         Sandal: setengah bola pipih, panjang 0,75u
 ```
 
-| Bagian | Bentuk | Titik engsel |
+| Bagian | Geometri three.js | Sendi (Object3D) |
 |---|---|---|
-| Kepala | Elips kacang dengan gradien radial (terang kiri atas) | Pangkal kepala (bisa miring ±15°, menoleh lewat geser fitur wajah ±12% lebar) |
-| Badan | Kapsul | Pinggul (condong ±10°) |
-| Lengan | Kapsul 0,28u, 2 ruas | Bahu, siku |
-| Tangan | Lingkaran 0,34u (mitten) | Pergelangan (bisa pegang prop) |
-| Kaki | Kapsul 0,32u, 2 ruas | Pinggul, lutut |
-| Alas kaki | Setengah elips | — |
+| Kepala | `LatheGeometry` profil "kacang" (setengah lingkaran + tonjolan pipi 12% di y = −0,35), tinggi 2,5u | Pangkal kepala: miring ±15°, menoleh ±35° |
+| Rambut | Lathe yang sama ×1,04, hanya bagian atas (y > 0,32), + 3 kerucut jambul | Ikut kepala |
+| Badan | `CapsuleGeometry` r 0,62, panjang 0,7, dipipihkan 0,8 di Z | Pinggul: condong ±10° |
+| Lengan | Kapsul r 0,15, 2 ruas | Bahu, siku |
+| Tangan | Bola r 0,2 (mitten) | Pergelangan (titik pegang prop) |
+| Kaki | Kapsul r 0,17, 2 ruas | Pinggul, lutut |
+| Alas kaki | Setengah bola dipipihkan (sandal) | — |
 
-Gaya render: isi gradien, garis tepi 3 px warna 35% lebih gelap dari isi, rim light 2 px di sisi yang
-terkena cahaya, bayangan kontak elips 40% hitam blur 10 px di bawah kaki.
+Gaya render: `MeshStandardMaterial` doff, bayangan lembut dari satu cahaya utama, cahaya lingkungan
+tipis. Tanpa garis tepi (outline). Semua mesh `castShadow` dan `receiveShadow`.
 
 ### 2.2 Wajah
 
-| Fitur | Parameter |
-|---|---|
-| Mata | Elips putih (lebar 0,42u), pupil hitam (0,16u), titik kilau putih. Param: `skala` 0,6–1,4, `pupil` (x, y) −1..1, `kelopak` 0 (terbuka) .. 1 (tertutup) |
-| Alis | Kurva tebal 0,09u. Param: `sudut` −30°..+30°, `naik` −0,1..+0,2u. Pembawa emosi utama. |
-| Mulut | Param: `bentuk` (garis, senyum, tawa_terbuka, o, gelombang, cemberut, seringai), `lebar` |
-| Aksesori | `keringat` (tetes biru di pelipis), `blush` (elips merah muda 40%), `bintang` (mata jadi bintang), `zzz`, `kaget_garis` (garis kejut di atas kepala) |
+Semua fitur wajah adalah mesh 3D kecil yang menempel di permukaan kepala, sehingga ikut berputar saat
+kepala menoleh.
 
-Kedip otomatis setiap 2,5–4 detik (acak per tokoh, durasi 4 frame), kecuali ekspresi `tidur`.
+| Fitur | Geometri | Parameter |
+|---|---|---|
+| Mata | Bola putih dipipihkan (r 0,25, Z ×0,5) + pupil bola hitam (r 0,11) mengilap | `skala` 0,6–1,4, `pupil` (x, y) −1..1, `kelopak` 0 (terbuka) .. 1 (tertutup; skala Y mata → 0,1) |
+| Alis | Kapsul r 0,05 panjang 0,28 | `sudut` −30°..+30°, `naik` −0,1..+0,2u. Pembawa emosi utama. |
+| Mulut | Set mesh siap tukar: `TorusGeometry` busur (senyum/cemberut), cincin (o), `TubeGeometry` di kurva (gelombang, seringai), busur + bidang gelap (tawa_terbuka) | `bentuk` (garis, senyum, tawa_terbuka, o, gelombang, cemberut, seringai), `lebar` |
+| Aksesori | Tetes (`keringat`), cakram merah muda transparan (`blush`), bintang ekstrusi (`bintang`, menggantikan mata), sprite `zzz`, garis kejut | Muncul/hilang dengan skala pop 120 ms |
+
+Kedip otomatis setiap 2,5–4 detik (acak per tokoh dari seed, durasi 4 frame), kecuali ekspresi `tidur`.
 
 ### 2.3 Daftar ekspresi
 
@@ -125,8 +134,9 @@ di akhir.
 
 ## 5. Pustaka set (MVP: 12 set)
 
-Setiap set terdiri dari lapisan `langit`, `belakang`, `tengah`, `depan` (untuk parallax) dan titik
-penempatan tokoh/prop bernama.
+Setiap set adalah adegan 3D (satu file `src/sets/<id>.js`) berisi lantai/jalan, bangunan, benda latar,
+langit, dan **titik bernama** (`Object3D` kosong) untuk menaruh tokoh, prop, dan target kamera. Objek
+yang berulang (pagar, pohon, kendaraan) memakai `InstancedMesh` supaya render tetap cepat.
 
 | ID | Set | Lapisan dan elemen | Titik bernama | Waktu yang didukung |
 |---|---|---|---|---|
@@ -200,19 +210,18 @@ sisanya diambil dari pustaka SFX bebas lisensi ke `assets/sfx/<id>.wav`.
 | Benda | `cring` (koin/kasir), `sobek_kertas`, `kaca_retak`, `standar_motor`, `rem_bus` |
 | Ambience | `burung_pagi`, `jangkrik`, `klakson_ramai`, `ac_kantor`, `hujan`* |
 
-## 7. Opsi plate AI (jika memakai jalur B di `04-arsitektur-pipeline.md`)
+## 7. Resep membangun di three.js
 
-Jika latar dibuat dengan model gambar, pakai templat prompt yang sama setiap kali agar gaya konsisten.
-Tokoh tetap digambar engine di atas plate supaya konsisten antar-episode.
+Pelajaran dari prototipe (`andai/scene3d/prototipe/`):
 
-```
-Latar ilustrasi vertikal 9:16 untuk animasi kartun 2.5D, tanpa tokoh manusia.
-Lokasi: {deskripsi set}, Indonesia, {waktu: pagi/siang/sore/malam}.
-Gaya: bentuk vektor sederhana, gradien lembut, garis tepi tipis berwarna gelap senada,
-bayangan lembut, palet {andai: hangat jenuh | nyata: pucat dingin berkabut}.
-Komposisi: lantai/jalan di 55–90% tinggi gambar untuk tempat tokoh, area atas lapang.
-Tanpa teks, tanpa logo, tanpa watermark.
-```
-
-Teks di dunia (papan, LED, label) tetap ditambahkan engine sebagai prop, bukan oleh model gambar,
-karena model gambar sering salah mengeja dan angkanya harus persis sesuai `fakta.yaml`.
+- **Kepala satu mesh.** Kepala dari dua bola yang ditumpuk menimbulkan garis sambungan yang terlihat.
+  Pakai satu `LatheGeometry` dengan profil kacang, lalu rambut sebagai lathe kedua yang sedikit lebih
+  besar.
+- **Tulisan di prop.** Gambar teks ke `<canvas>` dengan font Fredoka (tunggu `document.fonts.ready`), lalu
+  pakai sebagai `CanvasTexture` di bidang/kotak prop. LED: teks terang + `emissive` pada material.
+- **Angka raksasa.** `TextGeometry` (font Fredoka dikonversi ke JSON typeface) dengan `bevelEnabled`
+  supaya sudutnya bulat.
+- **Figuran banyak.** Bagian tubuh yang sama dibuat `InstancedMesh`; warna per instance dari palet figuran.
+- **Bayangan.** Satu cahaya utama dengan `shadow.radius` 4–6 dan `shadow.bias` ±−0,0005; atur kotak
+  kamera bayangan seketat mungkin di sekitar area aksi agar tajam.
+- **Kedalaman.** `THREE.Fog` tipis di Dunia Andai, tebal dan keabu-abuan di Dunia Nyata.
