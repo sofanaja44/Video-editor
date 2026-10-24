@@ -7,6 +7,18 @@ Remote Control. Claude bekerja langsung di server dan memakai GPU-nya.
 Syarat: akun Claude paket Pro, Max, Team, atau Enterprise (API key tidak bisa), dan server tetap menyala
 selama dipakai.
 
+## Spesifikasi server
+
+| Komponen | Pilihan |
+|---|---|
+| GPU | **NVIDIA RTX 5090** (32 GB VRAM) |
+| Driver | NVIDIA 570 ke atas, varian `open` (wajib untuk seri RTX 50) |
+| OS | Ubuntu 22.04 atau 24.04 |
+| RAM | Minimal 32 GB |
+| Disk | SSD 100 GB atau lebih |
+| CPU | 8 core atau lebih (caption, audio, encode) |
+| Blender | 5.2.3 LTS, dipasang otomatis oleh `andai/gpu/setup_server.sh` |
+
 ## Langkah
 
 1. **Masuk ke server** dari komputermu:
@@ -43,10 +55,14 @@ selama dipakai.
 6. **Buka sesinya** di aplikasi Claude Code atau https://claude.ai/code, pilih **"ANDAI GPU"**.
 
 7. **Pesan pertama** untuk sesi itu:
-   > Baca `skills/andai/ROADMAP.md` dan `skills/andai/references/04-arsitektur-pipeline.md` bagian 2.1.
-   > Uji render 3D pakai GPU server ini: cek `nvidia-smi`, lalu jalankan
-   > `andai/scene3d/prototipe/blender_scene.py` (EEVEE dan Cycles GPU) dan `render.js` (three.js).
-   > Bandingkan waktu per frame dan hasil gambarnya, perbarui dokumen, lalu commit dan push.
+   > Baca `skills/andai/README.md`, `skills/andai/ROADMAP.md`, dan
+   > `skills/andai/references/04-arsitektur-pipeline.md`. Jalankan `bash andai/gpu/setup_server.sh`
+   > untuk menyiapkan server RTX 5090 ini dan mengukur kecepatan render Blender (EEVEE dan Cycles GPU).
+   > Catat hasilnya di dokumen, commit dan push, lalu lanjutkan Fase 3 di ROADMAP: bangun karakter dan
+   > set dengan Blender lewat kode.
+
+   Kalau langkah 1 di skrip gagal karena driver belum ada, pasang dulu driver NVIDIA (versi 570 ke atas,
+   varian `open`), reboot, lalu jalankan lagi skripnya.
 
 ## Keamanan
 

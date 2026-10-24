@@ -5,3 +5,4 @@ episodes/*/audio/
 episodes/*/build/
 episodes/*/output/
 node_modules/
+andai/gpu/hasil/

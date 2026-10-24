@@ -58,6 +58,11 @@ Prinsip:
 
 ### 2.1 Sumber visual: 3D dari kode ✅ (diputuskan)
 
+> **Pembaruan: mesin render final = Blender (`bpy`) di server RTX 5090.** Semua tetap ditulis sebagai
+> kode Python (karakter, set, animasi, kamera, render). Server disiapkan dengan
+> `andai/gpu/setup_server.sh`; panduan sambungannya di `../SETUP-SERVER-GPU.md`. Modul three.js di bawah
+> tetap berguna untuk preview cepat di mesin tanpa GPU. Uji di bawah ini dilakukan sebelum ada GPU.
+
 Video referensi adalah render 3D sungguhan. Pengguna memilih **3D yang dibangun sepenuhnya lewat kode**.
 Tiga cara sudah diuji di container sesi Claude (4 core CPU, tanpa GPU), memakai adegan uji yang sama
 (Si Kamu di jalan depan rumah):

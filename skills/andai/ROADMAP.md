@@ -4,7 +4,7 @@
 
 | # | Keputusan | Status |
 |---|---|---|
-| 1 | Sumber visual | ✅ **3D dari kode** (three.js di Chromium headless). Diuji: 0,93 dtk/frame di 1080×1920 tanpa GPU. Blender Cycles terlalu lambat di container (31 dtk/frame) dan EEVEE butuh GPU. Detail: `references/04-arsitektur-pipeline.md` 2.1 |
+| 1 | Sumber visual | ✅ **Blender lewat kode (`bpy`), dirender di server RTX 5090.** Karakter, set, animasi, dan kamera ditulis sebagai skrip Python; render EEVEE (episode biasa) atau Cycles (kualitas tertinggi). three.js tetap ada sebagai preview tanpa GPU. Latar belakang uji: `references/04-arsitektur-pipeline.md` 2.1 |
 | 2 | Suara narator | Terbuka: rekaman sendiri · TTS gratis (edge-tts) · TTS premium/kloning. Rekomendasi: TTS gratis untuk prototipe; rekaman sendiri atau kloning untuk rilis |
 | 3 | Nama seri dan akun | Terbuka: "ANDAI" masih nama kerja. Tetapkan sebelum Fase 4 karena dipakai di logo pojok |
 | 4 | Topik pilot | Terbuka: `andai-macet` (contoh sudah ada) atau topik lain yang datanya mudah dicari dan tidak menyebut orang |
@@ -32,16 +32,18 @@
   caption per kata, Kartu Sumber, transisi Kedip, VO, dan SFX.
 - **Selesai jika:** animatic pilot bisa ditonton, tempo dan caption sesuai Buku Panduan, loudness −14 LUFS.
 
-### Fase 3: Engine 3D MVP
-- `scene3d/runner.js` + `shot.html`: render satu shot dari spesifikasi JSON, dengan cache dan handle
-  transisi (berangkat dari prototipe).
-- `src/rig.js` + `src/cast.js`: Si Kamu + 2 figuran, 6 pose, 8 ekspresi, kedip otomatis.
-- `src/sets/`: 5 set (`kamar`, `jalan_raya`, `halte`, `jalan_malam`, `dapur`).
-- `src/props/`: 8 prop (`led`, `kalender`, `label_harga`, `angka_raksasa`, `jam_dinding`, `motor`,
-  `mobil`, `lampu_lalu_lintas`), tulisan lewat `CanvasTexture`.
-- `src/lights.js` (4 waktu), `src/camera.js`, lalu `composite/grade.py` dan `composite/transitions.py`.
+### Fase 3: Engine 3D MVP (Blender, di server RTX 5090)
+- Siapkan server: `bash andai/gpu/setup_server.sh` (cek driver, pasang Blender 5.2.3 LTS, jalankan uji
+  render). Catat hasil `andai/gpu/hasil/hasil_uji.txt` ke `04-arsitektur-pipeline.md` bagian 2.1.
+- `andai/blender/rig.py` + `cast.py`: Si Kamu + 2 figuran dari skrip, 6 pose, 8 ekspresi, kedip otomatis.
+  Simpan sebagai aset `assets/blender/karakter.blend` agar dipakai ulang.
+- `andai/blender/sets/`: 5 set (`kamar`, `jalan_raya`, `halte`, `jalan_malam`, `dapur`).
+- `andai/blender/props/`: 8 prop (`led`, `kalender`, `label_harga`, `angka_raksasa`, `jam_dinding`,
+  `motor`, `mobil`, `lampu_lalu_lintas`), tulisan memakai objek teks Blender dengan font Fredoka.
+- `andai/blender/lights.py` (4 waktu), `camera.py`, `shot.py` (render satu shot dari storyboard ke
+  `build/shots/Sxx.mp4`, dengan cache), lalu `composite/grade.py` dan `composite/transitions.py`.
 - **Selesai jika:** setiap set terlihat konsisten dengan `03-karakter-dan-set.md`, dunia bisa ditebak dari
-  warna saja, dan waktu render terukur ulang untuk adegan nyata.
+  warna saja, dan waktu render per shot terukur di RTX 5090.
 
 ### Fase 4: Episode pilot end-to-end
 - Lengkapi set/prop yang dipakai `templates/contoh-andai-macet/storyboard.json`.
