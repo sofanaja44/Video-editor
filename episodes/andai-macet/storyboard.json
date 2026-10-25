@@ -1,0 +1,558 @@
+{
+  "slug": "andai-macet",
+  "fps": 30,
+  "ukuran": [1080, 1920],
+  "seed": 62,
+  "shots": [
+    {
+      "id": "S01",
+      "beat": "HOOK",
+      "anchor": {"kalimat": "K01", "kata": 0, "teks": "Andai"},
+      "dunia": "andai",
+      "waktu": "pagi",
+      "set": "kamar",
+      "cast": [
+        {"id": "kamu", "pose": "bangun", "ekspresi": "tidur", "titik": "kasur", "aksi": [{"di_kata": 4, "ekspresi": "senyum"}]}
+      ],
+      "props": [{"id": "jam_weker", "titik": "meja"}],
+      "efek": ["sinar_jendela", "debu_melayang"],
+      "kamera": {"gerak": "push_in", "zoom": [1.0, 1.06]},
+      "transisi_masuk": "kedip",
+      "sfx": [{"id": "burung_pagi", "mulai": "awal", "level": -35}],
+      "catatan": "Frame pertama = frame terakhir (loop). Kedip S01 dipecah: tutup di akhir video, buka di awal."
+    },
+    {
+      "id": "S02",
+      "beat": "HOOK",
+      "anchor": {"kalimat": "K01", "kata": 6, "teks": "macet"},
+      "dunia": "andai",
+      "waktu": "pagi",
+      "set": "jalan_raya",
+      "props": [{"id": "lampu_lalu_lintas", "status": "hijau", "titik": "simpang"}],
+      "kamera": {"gerak": "pull_out", "zoom": [1.08, 1.0]},
+      "transisi_masuk": "dissolve",
+      "catatan": "pun: kata 'macet' jatuh tepat saat jalan lengang terungkap."
+    },
+    {
+      "id": "S03",
+      "beat": "ANDAI-1",
+      "anchor": {"kalimat": "K02", "kata": 0, "teks": "Kamu"},
+      "dunia": "andai",
+      "waktu": "pagi",
+      "set": "jalan_raya",
+      "cast": [
+        {"id": "kamu", "pose": "naik_motor", "ekspresi": "senyum", "titik": "lajur_kiri", "hadap": "kanan"}
+      ],
+      "props": [{"id": "motor"}],
+      "efek": ["asap_knalpot"],
+      "kamera": {"gerak": "truck", "geser": 0.04, "sudut": "rendah"},
+      "transisi_masuk": "whip"
+    },
+    {
+      "id": "S04",
+      "beat": "ANDAI-1",
+      "anchor": {"kalimat": "K02", "kata": 4, "teks": "dan"},
+      "dunia": "andai",
+      "waktu": "pagi",
+      "set": "jalan_raya",
+      "cast": [
+        {"id": "kamu", "pose": "berdiri", "ekspresi": "senyum", "titik": "trotoar", "aksi": [{"di_kata": 8, "ekspresi": "mata_bintang"}]}
+      ],
+      "props": [
+        {"id": "jam_dinding", "jam": "07.00", "titik": "tiang", "aksi": [{"di_kata": 8, "jam": "07.15"}]}
+      ],
+      "kamera": {"gerak": "push_in", "zoom": [1.0, 1.06]},
+      "transisi_masuk": "cut",
+      "sfx": [{"id": "ding", "mulai": {"kata": 8}, "level": -20}],
+      "catatan": "Jarum jam melompat ke 07.15 tepat di kata 'seperempat'."
+    },
+    {
+      "id": "S05",
+      "beat": "ANDAI-1",
+      "anchor": {"kalimat": "K03", "kata": 0, "teks": "Pedagang"},
+      "dunia": "andai",
+      "waktu": "pagi",
+      "set": "jalan_raya",
+      "cast": [
+        {"id": "warga_1", "pose": "pegang", "pegang": "nampan_asongan", "ekspresi": "netral", "titik": "pulau_jalan", "aksi": [{"di_kata": 6, "ekspresi": "bengong"}]}
+      ],
+      "props": [{"id": "lampu_lalu_lintas", "status": "hijau", "titik": "simpang"}],
+      "kamera": {"gerak": "push_in", "zoom": [1.0, 1.06]},
+      "transisi_masuk": "dissolve"
+    },
+    {
+      "id": "S06",
+      "beat": "ANDAI-1",
+      "anchor": {"kalimat": "K03", "kata": 7, "teks": "lampunya"},
+      "dunia": "andai",
+      "waktu": "pagi",
+      "set": "jalan_raya",
+      "props": [{"id": "lampu_lalu_lintas", "status": "hijau", "titik": "simpang"}],
+      "kamera": {"gerak": "cu", "zoom": [1.5, 1.6], "target": "lampu_lalu_lintas"},
+      "transisi_masuk": "cut",
+      "sfx": [{"id": "pop", "mulai": {"kata": 9}, "level": -22}],
+      "catatan": "pun: lampu merah dan kuningnya berdebu, hanya hijau yang menyala."
+    },
+    {
+      "id": "S07",
+      "beat": "PIVOT",
+      "anchor": {"kalimat": "K04", "kata": 0, "teks": "Kedengarannya"},
+      "dunia": "andai",
+      "waktu": "pagi",
+      "set": "jalan_raya",
+      "cast": [{"id": "kamu", "pose": "angkat_bahu", "ekspresi": "bingung", "titik": "trotoar"}],
+      "kamera": {"gerak": "cu", "zoom": [1.4, 1.5], "target": "kamu"},
+      "transisi_masuk": "cut",
+      "catatan": "Tahan 0,5 dtk jeda sebelum kedip."
+    },
+    {
+      "id": "S08",
+      "beat": "NYATA-1",
+      "anchor": {"kalimat": "K05", "kata": 0, "teks": "Padahal"},
+      "dunia": "nyata",
+      "waktu": "pagi",
+      "set": "jalan_raya",
+      "cast": [
+        {"id": "warga_n", "jumlah": 14, "pose": "naik_motor", "ekspresi": "lelah", "sebar": "lajur_penuh"}
+      ],
+      "props": [{"id": "mobil", "jumlah": 6}, {"id": "angkot", "jumlah": 2}],
+      "efek": ["kabut", "asap_knalpot"],
+      "kamera": {"gerak": "pull_out", "zoom": [1.1, 1.0]},
+      "transisi_masuk": "kedip",
+      "sfx": [{"id": "klakson_ramai", "mulai": "awal", "level": -30}],
+      "catatan": "Jalan yang sama dengan S02, kini macet total."
+    },
+    {
+      "id": "S09",
+      "beat": "NYATA-1",
+      "anchor": {"kalimat": "K05", "kata": 9, "teks": "kehilangan"},
+      "dunia": "nyata",
+      "waktu": "pagi",
+      "set": "jalan_raya",
+      "cast": [{"id": "kamu", "pose": "naik_motor", "ekspresi": "lelah", "titik": "lajur_kiri"}],
+      "data": {"fakta": "F1", "bagian": "angka", "prop": "led", "gaya": "papan_info_jalan", "muncul_di_kata": 10},
+      "kamera": {"gerak": "push_in", "zoom": [1.0, 1.06]},
+      "transisi_masuk": "cut",
+      "sfx": [{"id": "beep", "mulai": {"kata": 10}, "level": -20}]
+    },
+    {
+      "id": "S10",
+      "beat": "NYATA-1",
+      "anchor": {"kalimat": "K06", "kata": 0, "teks": "Kalau"},
+      "dunia": "nyata",
+      "waktu": "pagi",
+      "set": "jalan_raya",
+      "cast": [
+        {"id": "kamu", "pose": "naik_motor", "ekspresi": "lelah", "aksi": [{"di_kata": 1, "anim": "lihat_jam_tangan"}]}
+      ],
+      "kamera": {"gerak": "cu", "zoom": [1.3, 1.4], "target": "kamu"},
+      "transisi_masuk": "cut"
+    },
+    {
+      "id": "S11",
+      "beat": "NYATA-1",
+      "anchor": {"kalimat": "K06", "kata": 5, "teks": "{F1.konversi}"},
+      "dunia": "nyata",
+      "waktu": "pagi",
+      "set": "jalan_raya",
+      "data": {"fakta": "F1", "bagian": "konversi", "prop": "kalender", "anim": "sobek_beruntun", "muncul_di_kata": 5},
+      "kamera": {"gerak": "push_in", "zoom": [1.0, 1.06]},
+      "transisi_masuk": "dissolve",
+      "sfx": [{"id": "sobek_kertas", "mulai": {"kata": 5}, "level": -22}],
+      "catatan": "Kalender tertempel di kaca mobil; halaman sobek beruntun sejumlah hari hasil konversi."
+    },
+    {
+      "id": "S12",
+      "beat": "JEMBATAN-1",
+      "anchor": {"kalimat": "K07", "kata": 0, "teks": "Di"},
+      "dunia": "andai",
+      "waktu": "pagi",
+      "set": "dapur",
+      "cast": [
+        {"id": "kamu", "pose": "duduk", "ekspresi": "senyum", "titik": "meja"},
+        {"id": "ibu", "pose": "duduk", "ekspresi": "tawa", "titik": "meja"}
+      ],
+      "props": [{"id": "jam_dinding", "jam": "06.45", "titik": "dinding"}],
+      "kamera": {"gerak": "push_in", "zoom": [1.0, 1.06]},
+      "transisi_masuk": "kedip",
+      "catatan": "pun: 'pulang ke meja makan' -> keluarga sarapan bersama; kamera mendekat ke meja di kata 8."
+    },
+    {
+      "id": "S13",
+      "beat": "JEMBATAN-1",
+      "anchor": {"kalimat": "K07", "kata": 6, "teks": "pulang"},
+      "dunia": "andai",
+      "waktu": "pagi",
+      "set": "dapur",
+      "props": [{"id": "piring", "jumlah": 3}],
+      "efek": ["uap_kopi"],
+      "kamera": {"gerak": "cu", "zoom": [1.3, 1.4], "target": "meja"},
+      "transisi_masuk": "cut",
+      "catatan": "Kamera turun ke meja makan penuh; tangan si Kamu dan ibu saling oper lauk."
+    },
+    {
+      "id": "S14",
+      "beat": "ANDAI-2",
+      "anchor": {"kalimat": "K08", "kata": 0, "teks": "Siangnya"},
+      "dunia": "andai",
+      "waktu": "siang",
+      "set": "halte",
+      "cast": [{"id": "ibu", "pose": "berdiri", "ekspresi": "senyum", "titik": "bangku"}],
+      "props": [
+        {"id": "papan_nama", "teks": "BUS 12.00", "titik": "tiang_halte"},
+        {"id": "jam_dinding", "jam": "12.00", "titik": "tiang_halte"}
+      ],
+      "kamera": {"gerak": "truck", "geser": 0.05},
+      "transisi_masuk": "whip"
+    },
+    {
+      "id": "S15",
+      "beat": "ANDAI-2",
+      "anchor": {"kalimat": "K08", "kata": 4, "teks": "naik"},
+      "dunia": "andai",
+      "waktu": "siang",
+      "set": "halte",
+      "props": [{"id": "bus", "titik": "jalur_bus", "aksi": [{"di_kata": 7, "anim": "datang"}]}],
+      "kamera": {"gerak": "truck", "geser": -0.05},
+      "transisi_masuk": "cut",
+      "sfx": [{"id": "rem_bus", "mulai": {"kata": 7}, "level": -24}],
+      "catatan": "Bus berhenti tepat saat jam di halte menunjuk 12.00."
+    },
+    {
+      "id": "S16",
+      "beat": "ANDAI-2",
+      "anchor": {"kalimat": "K09", "kata": 0, "teks": "Sopir"},
+      "dunia": "andai",
+      "waktu": "siang",
+      "set": "jalan_raya",
+      "cast": [{"id": "warga_2", "peran": "sopir_angkot", "pose": "duduk", "ekspresi": "netral"}],
+      "props": [{"id": "angkot", "kosong": true}],
+      "kamera": {"gerak": "push_in", "zoom": [1.0, 1.06]},
+      "transisi_masuk": "dissolve",
+      "catatan": "Detail lucu: angkot ngetem kosong di pinggir jalan."
+    },
+    {
+      "id": "S17",
+      "beat": "ANDAI-2",
+      "anchor": {"kalimat": "K09", "kata": 5, "teks": "malah"},
+      "dunia": "andai",
+      "waktu": "siang",
+      "set": "jalan_raya",
+      "cast": [
+        {"id": "warga_2", "peran": "sopir_angkot", "pose": "duduk", "ekspresi": "netral", "aksi": [{"di_kata": 6, "ekspresi": "bingung"}]}
+      ],
+      "kamera": {"gerak": "cu", "zoom": [1.4, 1.5], "target": "warga_2"},
+      "transisi_masuk": "cut",
+      "sfx": [{"id": "pop", "mulai": {"kata": 6}, "level": -24}]
+    },
+    {
+      "id": "S18",
+      "beat": "NYATA-2",
+      "anchor": {"kalimat": "K10", "kata": 0, "teks": "Di"},
+      "dunia": "nyata",
+      "waktu": "siang",
+      "set": "halte",
+      "cast": [
+        {"id": "warga_n", "jumlah": 10, "pose": "berdiri", "ekspresi": "lelah", "sebar": "deret"}
+      ],
+      "efek": ["kabut"],
+      "kamera": {"gerak": "pull_out", "zoom": [1.08, 1.0]},
+      "transisi_masuk": "kedip",
+      "catatan": "Halte yang sama dengan adegan Andai, kini kusam dan sepi."
+    },
+    {
+      "id": "S19",
+      "beat": "NYATA-2",
+      "anchor": {"kalimat": "K10", "kata": 4, "teks": "{F2}"},
+      "dunia": "nyata",
+      "waktu": "siang",
+      "set": "halte",
+      "cast": [
+        {"id": "warga_n", "jumlah": 10, "pose": "berdiri", "ekspresi": "lelah", "sebar": "deret"}
+      ],
+      "data": {"fakta": "F2", "bagian": "angka", "prop": "led", "gaya": "papan_halte", "muncul_di_kata": 4},
+      "kamera": {"gerak": "push_in", "zoom": [1.0, 1.06]},
+      "transisi_masuk": "cut",
+      "sfx": [{"id": "beep", "mulai": {"kata": 4}, "level": -20}],
+      "catatan": "Deret 10 warga: porsi sesuai F2 berwarna dan naik bus, sisanya abu-abu dan naik motor."
+    },
+    {
+      "id": "S20",
+      "beat": "ANDAI-3",
+      "anchor": {"kalimat": "K11", "kata": 0, "teks": "Sorenya"},
+      "dunia": "andai",
+      "waktu": "sore",
+      "set": "jalan_kampung",
+      "cast": [{"id": "kamu", "pose": "naik_motor", "ekspresi": "senyum", "titik": "jalan_tengah"}],
+      "props": [{"id": "motor"}],
+      "kamera": {"gerak": "truck", "geser": 0.04},
+      "transisi_masuk": "kedip"
+    },
+    {
+      "id": "S21",
+      "beat": "ANDAI-3",
+      "anchor": {"kalimat": "K11", "kata": 4, "teks": "langit"},
+      "dunia": "andai",
+      "waktu": "sore",
+      "set": "jalan_kampung",
+      "props": [{"id": "layangan", "jumlah": 3}],
+      "efek": ["bintang_kilau"],
+      "kamera": {"gerak": "tilt", "geser": -0.12},
+      "transisi_masuk": "cut",
+      "catatan": "Kamera naik ke langit jingga yang bersih; layangan anak-anak."
+    },
+    {
+      "id": "S22",
+      "beat": "NYATA-3",
+      "anchor": {"kalimat": "K12", "kata": 0, "teks": "Kembali"},
+      "dunia": "nyata",
+      "waktu": "sore",
+      "set": "jalan_raya",
+      "cast": [
+        {"id": "warga_n", "jumlah": 10, "pose": "naik_motor", "ekspresi": "lelah", "sebar": "lajur_penuh"}
+      ],
+      "props": [{"id": "mobil", "jumlah": 8}],
+      "efek": ["kabut", "asap_knalpot"],
+      "kamera": {"gerak": "pull_out", "zoom": [1.1, 1.0]},
+      "transisi_masuk": "kedip"
+    },
+    {
+      "id": "S23",
+      "beat": "NYATA-3",
+      "anchor": {"kalimat": "K12", "kata": 6, "teks": "kerugian"},
+      "dunia": "nyata",
+      "waktu": "sore",
+      "set": "jalan_raya",
+      "props": [{"id": "mobil", "jumlah": 8}],
+      "data": {"fakta": "F3", "bagian": "angka", "prop": "angka_raksasa", "bahan": "beton", "muncul_di_kata": 8},
+      "efek": ["kabut", "asap_knalpot"],
+      "kamera": {"gerak": "push_in", "zoom": [1.0, 1.06], "sudut": "rendah"},
+      "transisi_masuk": "cut",
+      "sfx": [{"id": "impact", "mulai": {"kata": 8}, "level": -16}],
+      "catatan": "pun: angka kerugian raksasa jatuh di tengah jalan dan ikut menghalangi lalu lintas."
+    },
+    {
+      "id": "S24",
+      "beat": "NYATA-3",
+      "anchor": {"kalimat": "K13", "kata": 0, "teks": "Kalau"},
+      "dunia": "nyata",
+      "waktu": "sore",
+      "set": "jalan_kampung",
+      "cast": [
+        {"id": "warga_n", "jumlah": 6, "pose": "berdiri", "ekspresi": "netral", "sebar": "deret"}
+      ],
+      "kamera": {"gerak": "truck", "geser": 0.05},
+      "transisi_masuk": "dissolve",
+      "catatan": "pun: 'dibagi rata' -> tumpukan uang kartun dipotong-potong ke deretan warga."
+    },
+    {
+      "id": "S25",
+      "beat": "NYATA-3",
+      "anchor": {"kalimat": "K13", "kata": 4, "teks": "{F3.konversi}"},
+      "dunia": "nyata",
+      "waktu": "sore",
+      "set": "jalan_kampung",
+      "cast": [
+        {"id": "nenek", "pose": "berdiri", "ekspresi": "kaget"},
+        {"id": "bayi", "pose": "duduk", "ekspresi": "netral"}
+      ],
+      "data": {"fakta": "F3", "bagian": "konversi", "prop": "label_harga", "muncul_di_kata": 4},
+      "kamera": {"gerak": "cu", "zoom": [1.3, 1.4], "target": "nenek"},
+      "transisi_masuk": "cut",
+      "sfx": [{"id": "cring", "mulai": {"kata": 4}, "level": -20}],
+      "catatan": "Label harga hasil konversi tergantung di leher nenek dan bayi juga."
+    },
+    {
+      "id": "S26",
+      "beat": "JEMBATAN-3",
+      "anchor": {"kalimat": "K14", "kata": 0, "teks": "Di"},
+      "dunia": "andai",
+      "waktu": "sore",
+      "set": "taman_kota",
+      "cast": [
+        {"id": "kamu", "pose": "jalan", "ekspresi": "senyum", "titik": "trotoar"},
+        {"id": "warga_n", "jumlah": 4, "pose": "jalan", "ekspresi": "tawa"}
+      ],
+      "efek": ["sinar_jendela"],
+      "kamera": {"gerak": "truck", "geser": 0.05},
+      "transisi_masuk": "kedip",
+      "catatan": "pun: uang -> taman dan trotoar lebar."
+    },
+    {
+      "id": "S27",
+      "beat": "TWIST",
+      "anchor": {"kalimat": "K15", "kata": 0, "teks": "Malamnya"},
+      "dunia": "netral",
+      "waktu": "malam",
+      "set": "jalan_malam",
+      "cast": [{"id": "kamu", "pose": "naik_motor", "ekspresi": "senyum", "titik": "jalan"}],
+      "props": [
+        {"id": "motor"},
+        {"id": "gerobak_martabak", "titik": "pos"},
+        {"id": "papan_nama", "teks": "MARTABAK", "gaya": "neon"}
+      ],
+      "kamera": {"gerak": "truck", "geser": 0.04},
+      "transisi_masuk": "kedip",
+      "sfx": [{"id": "jangkrik", "mulai": "awal", "level": -35}]
+    },
+    {
+      "id": "S28",
+      "beat": "TWIST",
+      "anchor": {"kalimat": "K16", "kata": 0, "teks": "Refleks"},
+      "dunia": "netral",
+      "waktu": "malam",
+      "set": "jalan_malam",
+      "cast": [{"id": "kamu", "pose": "berdiri", "ekspresi": "netral", "titik": "bahu_jalan"}],
+      "props": [{"id": "motor", "posisi": "setengah_di_lajur"}],
+      "kamera": {"gerak": "push_in", "zoom": [1.0, 1.08], "sudut": "rendah"},
+      "transisi_masuk": "cut",
+      "sfx": [{"id": "standar_motor", "mulai": {"kata": 2}, "level": -22}]
+    },
+    {
+      "id": "S29",
+      "beat": "TWIST",
+      "anchor": {"kalimat": "K17", "kata": 0, "teks": "Orang-orang"},
+      "dunia": "netral",
+      "waktu": "malam",
+      "set": "jalan_malam",
+      "cast": [
+        {"id": "warga_n", "jumlah": 4, "pose": "naik_motor", "ekspresi": "netral", "sebar": "antre_lajur"}
+      ],
+      "kamera": {"gerak": "pull_out", "zoom": [1.06, 1.0]},
+      "transisi_masuk": "cut",
+      "catatan": "Mereka antre rapi di belakang motor si Kamu, tanpa klakson."
+    },
+    {
+      "id": "S30",
+      "beat": "TWIST",
+      "anchor": {"kalimat": "K17", "kata": 5, "teks": "mereka"},
+      "dunia": "netral",
+      "waktu": "malam",
+      "set": "jalan_malam",
+      "cast": [
+        {"id": "warga_3", "pose": "naik_motor", "ekspresi": "netral", "aksi": [{"di_kata": 7, "ekspresi": "bingung"}]}
+      ],
+      "kamera": {"gerak": "cu", "zoom": [1.5, 1.6], "target": "warga_3"},
+      "transisi_masuk": "cut",
+      "sfx": [{"id": "pop", "mulai": {"kata": 7}, "level": -24}]
+    },
+    {
+      "id": "S31",
+      "beat": "TWIST",
+      "anchor": {"kalimat": "K18", "kata": 0, "teks": "Kotanya"},
+      "dunia": "netral",
+      "waktu": "malam",
+      "set": "jalan_malam",
+      "cast": [{"id": "kamu", "pose": "berdiri", "ekspresi": "malu_keringat"}],
+      "kamera": {"gerak": "cu", "zoom": [1.5, 1.62], "target": "kamu"},
+      "transisi_masuk": "cut",
+      "catatan": "Tahan sampai jeda 0,6 dtk selesai."
+    },
+    {
+      "id": "S32",
+      "beat": "REFLEKSI",
+      "anchor": {"kalimat": "K19", "kata": 0, "teks": "Di"},
+      "dunia": "netral",
+      "waktu": "malam",
+      "set": "jalan_raya",
+      "data": {"fakta": "F4", "bagian": "angka", "prop": "led", "gaya": "papan_info_jalan", "muncul_di_kata": 3},
+      "kamera": {"gerak": "push_in", "zoom": [1.0, 1.06]},
+      "transisi_masuk": "whip",
+      "sfx": [{"id": "beep", "mulai": {"kata": 3}, "level": -20}]
+    },
+    {
+      "id": "S33",
+      "beat": "REFLEKSI",
+      "anchor": {"kalimat": "K20", "kata": 0, "teks": "Macet"},
+      "dunia": "netral",
+      "waktu": "malam",
+      "set": "jalan_raya",
+      "props": [{"id": "mobil", "jumlah": 4}],
+      "kamera": {"gerak": "pull_out", "zoom": [1.08, 1.0]},
+      "transisi_masuk": "dissolve"
+    },
+    {
+      "id": "S34",
+      "beat": "REFLEKSI",
+      "anchor": {"kalimat": "K21", "kata": 0, "teks": "Ada"},
+      "dunia": "netral",
+      "waktu": "malam",
+      "set": "jalan_malam",
+      "props": [
+        {"id": "jam_dinding", "jam": "19.00", "aksi": [{"di_kata": 2, "jam": "19.05", "anim": "putar_cepat"}]}
+      ],
+      "kamera": {"gerak": "cu", "zoom": [1.4, 1.5], "target": "jam_dinding"},
+      "transisi_masuk": "cut",
+      "catatan": "pun: 'lima menit' -> jarum berputar cepat lima menit."
+    },
+    {
+      "id": "S35",
+      "beat": "REFLEKSI",
+      "anchor": {"kalimat": "K21", "kata": 7, "teks": "ambil"},
+      "dunia": "netral",
+      "waktu": "malam",
+      "set": "jalan_raya",
+      "cast": [
+        {"id": "warga_n", "jumlah": 3, "pose": "naik_motor", "ekspresi": "netral", "sebar": "serobot_lajur"}
+      ],
+      "props": [{"id": "mobil", "jumlah": 3}],
+      "kamera": {"gerak": "truck", "geser": 0.06},
+      "transisi_masuk": "whip",
+      "catatan": "Motor-motor menyerobot lajur sebelah; lajur itu jadi tersendat."
+    },
+    {
+      "id": "S36",
+      "beat": "LOOP",
+      "anchor": {"kalimat": "K22", "kata": 0, "teks": "Kamu"},
+      "dunia": "andai",
+      "waktu": "malam",
+      "set": "jalan_malam",
+      "cast": [
+        {"id": "kamu", "pose": "pegang", "pegang": "motor", "ekspresi": "senyum", "titik": "parkir"}
+      ],
+      "kamera": {"gerak": "truck", "geser": 0.04},
+      "transisi_masuk": "kedip",
+      "catatan": "Grade kembali hangat: si Kamu memindahkan motor ke tempat parkir."
+    },
+    {
+      "id": "S37",
+      "beat": "LOOP",
+      "anchor": {"kalimat": "K22", "kata": 5, "teks": "lalu"},
+      "dunia": "andai",
+      "waktu": "malam",
+      "set": "kamar",
+      "cast": [{"id": "kamu", "pose": "tidur", "ekspresi": "tidur", "titik": "kasur"}],
+      "props": [{"id": "jam_weker", "titik": "meja"}],
+      "kamera": {"gerak": "push_in", "zoom": [1.0, 1.06]},
+      "transisi_masuk": "dissolve"
+    },
+    {
+      "id": "S38",
+      "beat": "LOOP",
+      "anchor": {"kalimat": "K23", "kata": 0, "teks": "Karena"},
+      "dunia": "andai",
+      "waktu": "malam",
+      "set": "jalan_kampung",
+      "cast": [
+        {"id": "warga_n", "jumlah": 6, "pose": "berdiri", "ekspresi": "senyum", "sebar": "deret"}
+      ],
+      "props": [{"id": "motor", "jumlah": 6, "posisi": "parkir_rapi"}],
+      "kamera": {"gerak": "truck", "geser": 0.05},
+      "transisi_masuk": "dissolve"
+    },
+    {
+      "id": "S39",
+      "beat": "LOOP",
+      "anchor": {"kalimat": "K23", "kata": 9, "teks": "mungkin"},
+      "dunia": "andai",
+      "waktu": "pagi",
+      "set": "kamar",
+      "cast": [{"id": "kamu", "pose": "bangun", "ekspresi": "tidur", "titik": "kasur"}],
+      "props": [{"id": "jam_weker", "titik": "meja"}],
+      "efek": ["sinar_jendela", "debu_melayang"],
+      "kamera": {"gerak": "push_in", "zoom": [1.0, 1.06]},
+      "transisi_masuk": "dissolve",
+      "catatan": "Sama dengan S01. Tahan sepanjang jeda 0,8 dtk, lalu separuh kedip (tutup) di frame terakhir."
+    }
+  ]
+}

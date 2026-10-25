@@ -6,6 +6,8 @@ badan = lean forward, kepala = (tilt toward +X, turn toward +X).
 """
 import math
 
+MOTOR_PINGGUL_Z = 2.05          # hip height of a rider on the toy motorbike (props/kendaraan.py seat top = 1.5)
+
 # segment lengths (joint to joint) and ankle-to-sole distance, in scene units; see rig.py for the build
 THIGH, SHIN, SOLE = 0.5, 0.5, 0.27
 
@@ -20,6 +22,8 @@ POSES = {
     'menunjuk': dict(bahu_R=(25, 78), siku_R=0, kepala=(0, -12), badan=-2),
     'angkat_bahu': dict(bahu_L=(8, 38), bahu_R=(8, 38), siku_L=100, siku_R=100, kepala=(9, 0)),
     'pegang': dict(bahu_R=(42, 6), siku_R=78, kepala=(0, -6)),
+    'naik_motor': dict(pinggul_z=MOTOR_PINGGUL_Z, badan=8, paha_L=70, paha_R=70, lutut_L=82, lutut_R=82,
+                       bahu_L=(58, 14), bahu_R=(58, 14), siku_L=38, siku_R=38),
 }
 
 

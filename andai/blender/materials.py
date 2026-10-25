@@ -99,3 +99,43 @@ def _pattern(nt, bsdf, coord, hex1, jenis, hex2, skala):
     mix.inputs[7].default_value = (*srgb(hex2), 1)      # B (mask 1): pattern colour
     nt.links.new(ramp.outputs['Color'], mix.inputs[0])
     nt.links.new(mix.outputs[2], bsdf.inputs['Base Color'])
+
+
+def fasad(wall, jendela, malam=False, lebar=1.5, tinggi=1.7, tepi=0.22):
+    """Building wall with a regular grid of windows (object-space bricks: mortar = wall, brick = window).
+    At night the windows glow. Front and side faces both work (u = x + y, v = z)."""
+    name = f'andai:fasad:{wall}:{jendela}:{malam}:{lebar}:{tinggi}'
+    m = bpy.data.materials.get(name)
+    if m:
+        return m
+    m = bpy.data.materials.new(name); m.use_nodes = True
+    nt = m.node_tree; b = nt.nodes['Principled BSDF']
+    b.inputs['Roughness'].default_value = 0.8
+    tc = nt.nodes.new('ShaderNodeTexCoord')
+    sep = nt.nodes.new('ShaderNodeSeparateXYZ')
+    add = nt.nodes.new('ShaderNodeMath'); add.operation = 'ADD'
+    com = nt.nodes.new('ShaderNodeCombineXYZ')
+    nt.links.new(tc.outputs['Object'], sep.inputs['Vector'])
+    nt.links.new(sep.outputs['X'], add.inputs[0]); nt.links.new(sep.outputs['Y'], add.inputs[1])
+    nt.links.new(add.outputs['Value'], com.inputs['X']); nt.links.new(sep.outputs['Z'], com.inputs['Y'])
+    br = nt.nodes.new('ShaderNodeTexBrick')
+    br.offset = 0.0; br.squash = 1.0
+    br.inputs['Color1'].default_value = (*srgb(jendela), 1); br.inputs['Color2'].default_value = (*srgb(jendela), 1)
+    br.inputs['Mortar'].default_value = (*srgb(wall), 1)
+    br.inputs['Scale'].default_value = 1.0
+    br.inputs['Mortar Size'].default_value = tepi; br.inputs['Mortar Smooth'].default_value = 0.0
+    br.inputs['Brick Width'].default_value = lebar; br.inputs['Row Height'].default_value = tinggi
+    nt.links.new(com.outputs['Vector'], br.inputs['Vector'])
+    nt.links.new(br.outputs['Color'], b.inputs['Base Color'])
+    if malam:                                   # night: each window is randomly lit (warm) or dark; walls go dark
+        br.inputs['Color1'].default_value = (*srgb('#FFC56B'), 1)
+        br.inputs['Color2'].default_value = (*srgb('#1B2233'), 1)
+        br.inputs['Mortar'].default_value = (*srgb(darker(wall, 0.38)), 1)
+        br.inputs['Bias'].default_value = 0.0
+        inv = nt.nodes.new('ShaderNodeMath'); inv.operation = 'SUBTRACT'; inv.inputs[0].default_value = 1.0
+        nt.links.new(br.outputs['Fac'], inv.inputs[1])            # Fac is 1 on the wall, so 1 - Fac = window mask
+        gain = nt.nodes.new('ShaderNodeMath'); gain.operation = 'MULTIPLY'; gain.inputs[1].default_value = 1.1
+        nt.links.new(inv.outputs['Value'], gain.inputs[0])
+        nt.links.new(gain.outputs['Value'], b.inputs['Emission Strength'])
+        nt.links.new(br.outputs['Color'], b.inputs['Emission Color'])
+    return m

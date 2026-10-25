@@ -21,12 +21,16 @@ diganti, lihat `skills/andai/PINDAH-SERVER.md`. Angka dan jebakan GPU: `skills/a
 | `cast.py` | 10 tokoh bernama (`tokoh('polisi')`), `kamu()`, `warga(n, seed, peran)`, `kerumunan(jumlah, sebar, ...)` |
 | `lights.py` | `setup(sc, waktu)`: langit gradasi + matahari + lampu isi + lampu pinggir untuk pagi/siang/sore/malam |
 | `fx.py` | `dof`, `motion_blur`, `kabut` (kotak volume terbatas), `debu`, `bloom` (compositor) |
+| `camera.py` | `pasang(spec, fokus, f0, f1)`: gerak kamera dari storyboard (push_in, pull_out, truck, cu, tilt, orbit, getar), tinggi lensa dijaga di atas tanah |
+| `sets/` | `bangun(nama, dunia, waktu, seed)` mengembalikan `Set` dengan titik bernama; `jalan_raya` sudah ada; `pandang()` menyembunyikan penghalang di antara kamera dan subjek |
+| `props/` | `buat('motor' / 'mobil' / 'angkot' / 'bus' / 'lampu_lalu_lintas', ...)` mengembalikan `Prop` dengan soket (`dudukan`, `setang_L/R`, `knalpot`, ...) |
 | `stage.py` | `fresh_scene` (Cycles GPU + denoise GPU, Khronos PBR Neutral), `sky`, `sun`, `floor`, `camera`, `render` |
 | `uji_karakter.py/.sh` | Lembar uji: pose depan dan samping, gaya rambut, 12 ekspresi, kedip |
 | `uji_model.py` | Si Kamu dari empat sisi + close-up kepala |
 | `uji_pemeran.py` | Seluruh pemeran: dua barisan dan potret |
 | `uji_efek.py` | Adegan sama tanpa dan dengan efek, dengan waktu |
 | `uji_kerumunan.py` | Uji beban: kerumunan 28/60 figuran + efek penuh, cetak waktu bangun dan render |
+| `uji_jalan.py` | Set jalan raya di tiga dunia + Si Kamu naik motor (shot S03), tampak lebar dan close-up |
 | `uji_keyframe.py`, `uji_kerumunan_bentuk.py` | Uji regresi tanpa render (keyframe; semua formasi, peran, pose, ekspresi) |
 
 ## Pakai

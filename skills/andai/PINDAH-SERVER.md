@@ -71,8 +71,16 @@ Diukur di server GPU saat ini, memakai CPU saja (Cycles, 1080×1920, adegan Si K
 | CPU, 540×960, 24 sampel | ±15 dtk | pratinjau satu shot |
 | GPU RTX 5090, 64 sampel + semua efek | 2,8–4,3 dtk | produksi |
 
-(64 thread di container ini malah lebih lambat daripada 8, karena kuota CPU.) Video 90 detik (2.700 frame)
-memerlukan ±35 jam di CPU, jadi untuk produksi tetap perlu GPU; sewa GPU per jam sudah cukup karena satu episode
+Diukur 2026-10-25 di server utama (8 vCPU AMD EPYC 7663, Blender dari cadangan di `/root/blender`, 6 thread, adegan pilot S03: Si Kamu naik motor):
+
+| Mode CPU | Waktu per frame | Video 90 dtk |
+|---|---|---|
+| Pratinjau 540×960, 8 sampel, tanpa kabut | 9,9 dtk | ±3,7 jam (15 fps) |
+| **Hemat 720×1280, 16 sampel, tanpa kabut (kualitas bersih di HP)** | **23,8 dtk** | **±9 jam (15 fps), ±18 jam (30 fps)** |
+| Penuh 1080×1920, 32 sampel, semua efek | 163 dtk | ±122 jam (±5 hari) |
+
+(64 thread di container GPU malah lebih lambat daripada 8, karena kuota CPU.) Video 90 detik (2.700 frame)
+memerlukan ±35 jam di CPU pada kualitas penuh. Mode hemat 15 fps ±9 jam (semalam), jadi CPU cukup untuk produksi bila tidak ada GPU; sewa GPU per jam sudah cukup karena satu episode
 diperkirakan ±1,5–3 jam GPU RTX 5090 (2.700 frame × 2–4 dtk). Pratinjau ringan tanpa GPU tetap bisa memakai prototipe three.js
 (`andai/scene3d/prototipe/`).
 
@@ -81,3 +89,20 @@ diperkirakan ±1,5–3 jam GPU RTX 5090 (2.700 frame × 2–4 dtk). Pratinjau ri
 - Password server tidak pernah disimpan di repo, di toko aset, atau di `gpu.env`; hanya kunci SSH.
 - `andai/gpu/gpu.env` tidak di-commit (ada di `.gitignore`); `gpu.env.example` yang di-commit.
 - Kunci SSH proyek: `~/.ssh/andai_gpu` (di Rumah). Jangan salin ke tempat lain; buat baru dengan `gpu.sh kunci`.
+
+## Google Colab (GPU gratis, hanya sebagai tambahan)
+
+Perkiraan, **belum diukur**: T4 kira-kira 8–15 kali lebih lambat dari RTX 5090 (skor benchmark T4 tidak ketemu; dasarnya
+spesifikasi dan skor 5090 sekitar 15 ribu–17,8 ribu di Blender Open Data).
+
+| Mode | Per frame di T4 | Video 90 dtk |
+|---|---|---|
+| Penuh (1080×1920, 64 sampel, semua efek) | ±30–55 dtk | ±11–21 jam (15 fps) |
+| Menengah (1080×1920, 32 sampel, tanpa kabut) | ±15–28 dtk | ±6–10 jam |
+| Hemat (720×1280, 16 sampel) | ±4–7 dtk | ±1,5–2,5 jam |
+
+Dari FAQ resmi Colab (dibaca 2026-10-25): versi gratis melarang "remote control such as SSH shells, remote desktops", jadi
+**`gpu.sh` tidak boleh dipakai ke Colab gratis**; pakai notebook yang dijalankan manual di browser. Sesi paling lama 12 jam
+dan putus bila didiamkan; jenis GPU berubah-ubah (T4 tidak dijamin); batas pemakaian tidak dipublikasikan dan bisa berubah;
+penyimpanan sesi hilang saat sesi berakhir, jadi hasil harus ke Google Drive. Belum diperiksa apakah merender Blender sah
+menurut syarat gratisnya. Render per shot yang bisa dilanjutkan cocok untuk batas sesi ini.

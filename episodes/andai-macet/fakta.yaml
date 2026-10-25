@@ -1,0 +1,87 @@
+# Fakta episode andai-macet. Dicari dan diperiksa 2026-10-24. Status tetap "draf" sampai Gerbang 1 disetujui.
+# Aturan: skills/andai/references/01-buku-panduan.md bab 8. Tidak ada angka yang dikarang: semuanya dari sumber di bawah.
+
+- id: F1
+  klaim: "Waktu yang hilang di jalan karena macet per pengendara per tahun, untuk berangkat dan pulang di jam sibuk."
+  angka: "117 jam"
+  ucapan: "seratus tujuh belas jam"
+  satuan: jam/tahun
+  sumber:
+    lembaga: "TomTom (Traffic Index 2023, kota Jakarta), dikutip CNN Indonesia"
+    judul: "London Jadi Kota Termacet di Dunia 2023, Jakarta Urutan Berapa?"
+    tahun: 2023
+    url: "https://www.cnnindonesia.com/gaya-hidup/20240112021519-269-1048410/london-jadi-kota-termacet-di-dunia-2023-jakarta-urutan-berapa/amp"
+    diakses: "2026-10-24"
+  kartu_sumber: "Sumber: TomTom Traffic Index, 2023"
+  konversi:
+    teks: "hampir lima hari penuh, tanpa tidur"
+    rumus: "117 jam ÷ 24 = 4,875 hari (4 hari 21 jam)"
+  catatan: >
+    Definisi TomTom (tomtom.com/traffic-index/about): selisih waktu tempuh jam sibuk terhadap jalan lengang untuk
+    perjalanan 10 km, pergi-pulang, 230 hari kerja per tahun. Jadi kalimat naskah harus bilang "berangkat dan pulang di
+    jam sibuk". Angka 117 jam dikutip lewat CNN (12 Jan 2024); halaman TomTom sendiri tidak bisa dibuka lewat alat
+    saya, jadi perlu satu pengecekan oleh manusia bila mau 100% primer.
+  status: draf
+
+- id: F2
+  klaim: "Porsi pergerakan harian di Jakarta yang memakai angkutan umum (di luar ojek/taksi online), data 2022."
+  angka: "10,29%"
+  ucapan: "sekitar sepuluh persen"
+  satuan: persen perjalanan
+  sumber:
+    lembaga: "BPTJ (Badan Pengelola Transportasi Jabodetabek), dikutip Investortrust"
+    judul: "BPJT Sebut Jangkauan Transportasi Umum Capai 70% di Area Jakarta"
+    tahun: 2022
+    url: "https://investortrust.id/business/8685/bpjt-sebut-jangkauan-transportasi-umum-capai-70-di-area-jakarta"
+    diakses: "2026-10-24"
+  kartu_sumber: "Sumber: BPTJ, data 2022"
+  konversi: {teks: null, rumus: null}
+  catatan: >
+    Pernyataan Direktur Angkutan BPTJ, 18 Sep 2023, untuk data 2022 (bersumber Dishub DKI dan BPS; total 19,63 juta
+    perjalanan per hari). Kutipan asli: "modal share angkutan umum sebesar 18,45% (termasuk angkutan online) atau
+    10,29% (di luar angkutan online)". Kita pakai 10,29% (definisi angkutan umum biasa) dan menyebut "sekitar".
+  status: draf
+
+- id: F3
+  klaim: "Kerugian ekonomi akibat kemacetan di wilayah Jabodetabek per tahun, hitungan Bappenas."
+  angka: "Rp65 triliun"
+  ucapan: "enam puluh lima triliun rupiah"
+  satuan: rupiah/tahun
+  sumber:
+    lembaga: "Bappenas, dikutip Sekretariat Kabinet RI"
+    judul: "Pengelolaan Transportasi Jabodetabek"
+    tahun: 2019
+    url: "https://setkab.go.id/pengelolaan-transportasi-jabodetabek/"
+    diakses: "2026-10-24"
+  kartu_sumber: "Sumber: Bappenas via Setkab, 2019"
+  konversi:
+    teks: "sekitar seratus tujuh puluh delapan miliar rupiah setiap hari"
+    rumus: "Rp65.000 miliar ÷ 365 hari = Rp178 miliar per hari"
+  catatan: >
+    Kutipan asli: "Menurut data Bappenas, kemacetan di wilayah Jabodetabek mengakibatkan kerugian sebesar Rp 65
+    Trilliun per tahun" (4 Feb 2019). Hitungan mencakup kesehatan, lingkungan, biaya operasional, bahan bakar yang
+    boros, dan produktivitas. Ada angka lain yang lebih besar (Rp100 triliun, dikaitkan dengan studi Bappenas/JUTPI II
+    2019 dan disebut pejabat pada 2017 dan 2025); angka itu tidak dipakai karena sumber aslinya tidak ketemu. Konversi
+    "per warga" sengaja tidak dipakai: jumlah penduduk Jabodetabek yang resmi tidak berhasil diverifikasi.
+  status: draf
+
+- id: F4
+  klaim: "Seberapa besar parkir di badan jalan memangkas kapasitas jalan (satu ruas di dekat pasar)."
+  angka: "39,03%"
+  ucapan: "satu studi di ruas jalan dekat pasar menemukan parkir di badan jalan memangkas kapasitas jalan sekitar tiga puluh sembilan persen"
+  satuan: persen kapasitas
+  sumber:
+    lembaga: "Masrul & Utami, Borneo Engineering: Jurnal Teknik Sipil"
+    judul: "Analisis Pengaruh On-Street Parking terhadap Kinerja Jalan di Pasar Jaya Ciracas, Jakarta Timur"
+    tahun: 2021
+    url: "http://jurnal.borneo.ac.id/index.php/borneoengineering/article/view/2113"
+    diakses: "2026-10-24"
+  kartu_sumber: "Sumber: studi Masrul & Utami, 2021 (satu ruas jalan)"
+  konversi: {teks: null, rumus: null}
+  catatan: >
+    Hanya satu lokasi, jadi naskah wajib bilang "satu studi di ruas jalan dekat pasar" dan tidak boleh digeneralisasi
+    ke semua kota. Abstrak: selisih kapasitas jalan sekitar 39,03%; tingkat layanan jalan D saat ada parkir di badan
+    jalan dan bisa naik ke C tanpa parkir. Cari tahu dulu nilai kapasitas absolutnya di PDF penuh bila mau dikutip
+    lebih jauh. Angka klasik "30 sampai 40 persen" (Hobbs, 1979) hanya terlihat lewat kutipan studi lain, jadi tidak
+    dipakai.
+  status: draf

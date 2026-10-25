@@ -13,6 +13,8 @@ dengan voice-over, caption per kata, dan akhir yang berputar (loop).
 | `motion/` | Modul Python untuk tahap komposit: easing, color grade, efek, teks/sprite, SFX sintetis |
 | `assets/fonts/` | Font berlisensi SIL OFL |
 
+Catatan serah-terima dan status terbaru: [`skills/andai/CATATAN.md`](skills/andai/CATATAN.md).
+
 Status: rancangan + prototipe. Engine lengkapnya belum dibangun; urutan pembangunan ada di
 [`skills/andai/ROADMAP.md`](skills/andai/ROADMAP.md). Untuk render dengan GPU, lihat
 [`skills/andai/SETUP-SERVER-GPU.md`](skills/andai/SETUP-SERVER-GPU.md).
