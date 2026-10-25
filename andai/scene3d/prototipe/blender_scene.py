@@ -18,6 +18,8 @@ if engine == 'CYCLES':
     sc.cycles.device = device; sc.cycles.samples = samples; sc.cycles.use_denoising = True
     sc.cycles.max_bounces = 4
     if device == 'GPU':
+        # Headless Blender denoises on the CPU by default: ~9 s/frame at 1080x1920 vs ~0.1 s on the GPU.
+        sc.cycles.denoising_use_gpu = True
         prefs = bpy.context.preferences.addons['cycles'].preferences
         for backend in ('OPTIX', 'CUDA', 'HIP', 'ONEAPI'):
             try:

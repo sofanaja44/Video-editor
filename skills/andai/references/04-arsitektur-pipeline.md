@@ -75,7 +75,43 @@ Tiga cara sudah diuji di container sesi Claude (4 core CPU, tanpa GPU), memakai 
 
 Perbandingan visual: `img/uji-3d-perbandingan.jpg`.
 
-**Alasan memilih three.js:**
+**Hasil ukur di server RTX 5090** (24 Okt 2026; Ubuntu 24.04, driver 580.126.09 open, Blender 5.2.3 LTS,
+AMD EPYC 9354, 1 GPU terlihat oleh container; adegan uji yang sama, 1080×1920, diukur dengan
+`andai/gpu/bench_frames.py`, frame ke-2 dst.):
+
+| Cara | Waktu per frame | Episode 90 dtk (2.700 frame) | Catatan |
+|---|---|---|---|
+| **Cycles GPU (CUDA), 64 sampel, denoise GPU** | **0,50 dtk** | **±22 menit** | **Dipakai.** Kualitas tertinggi |
+| Cycles GPU (CUDA), 64 sampel, denoise CPU (bawaan Blender headless) | 9,3 dtk | ±7 jam | Jangan dipakai. Lihat jebakan di bawah |
+| Cycles GPU, 64 sampel, tanpa denoise | 0,45 dtk | ±20 menit | Berbintik; hanya untuk pembanding |
+| EEVEE | Tidak jalan | — | Container hanya membawa lapisan compute driver NVIDIA (CUDA/NVML/encode), tanpa `libEGL_nvidia`/`libGLX_nvidia`/Vulkan ICD, jadi EEVEE jatuh ke Mesa software dan menggantung |
+
+**Jebakan:** Blender headless mendenoise di CPU secara default (`scene.cycles.denoising_use_gpu = False`),
+sehingga satu frame makan ±9 dtk berapa pun jumlah sampelnya. Semua skrip render **wajib** menyetel
+`denoising_use_gpu = True` saat device GPU (sudah ada di `blender_scene.py`; ikuti di `shot.py`). OptiX tidak
+tersedia (tanpa `libnvoptix`), Cycles memakai CUDA, dan itu sudah cukup cepat.
+
+**Biaya efek** (RTX 5090, 1080×1920, 64 sampel, Si Kamu berjalan + 5 figuran, diukur satu per satu):
+
+| Efek | Tambahan waktu | Catatan |
+|---|---|---|
+| Cahaya 3 titik + langit gradasi | +0,2 dtk | dasar 1,35 → 1,55 dtk |
+| Depth of field, motion blur | ≈ 0 | gratis di Cycles GPU |
+| Debu melayang (45–90 bola) | +0,05 dtk | |
+| Bloom (compositor Glare) | +0,2 dtk | node group di Blender 5 |
+| Kabut (kotak volume terbatas) | +0,8 dtk | **jangan** volume dunia tak hingga: langit hilang dan gambar gelap |
+| Semua efek | 2,8 dtk (64 sampel), 4,1 dtk (128) | adegan ramai 28 figuran: 4,3 / 5,8 dtk; 60 figuran: 5,1 dtk |
+
+Membangun adegan ramai (28 figuran, ±2.900 objek) memakan ±14 dtk, sekali per shot. Perkiraan episode 90 detik
+(2.700 frame): 1,3 jam tanpa kabut dan figuran, 2–3 jam dengan efek penuh, 3,2 jam bila semua shot ramai.
+
+Karena Cycles GPU sudah ±0,5 dtk/frame, EEVEE tidak diperlukan. Bila suatu hari dibutuhkan, library grafis
+NVIDIA harus dipasang dengan versi yang persis sama dengan driver (580.126.09); paket apt `libnvidia-gl-580`
+menarik `libnvidia-compute-580` dan berisiko menimpa library CUDA yang disuntikkan container, jadi ekstrak
+`.deb`-nya ke folder terpisah dan arahkan lewat `LD_LIBRARY_PATH`, `VK_ICD_FILENAMES`, dan
+`__EGL_VENDOR_LIBRARY_FILENAMES` (belum dicoba).
+
+**Alasan memilih three.js (keputusan awal, sebelum ada GPU):**
 - Satu-satunya yang realistis dijalankan otomatis di dalam sesi Claude.
 - Playwright + Chromium sudah terpasang di environment; three.js cukup `npm install`.
 - Tulisan di prop (LED, kalender, label harga) bisa digambar persis memakai `CanvasTexture` dengan font

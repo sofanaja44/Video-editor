@@ -1,0 +1,24 @@
+# Brief episode pilot ANDAI. Skema: skills/andai/references/05-skema-data.md
+
+slug: andai-macet
+judul_kerja: "Andai Besok Nggak Ada Macet"
+topik: kemacetan kota
+kebiasaan_twist: parkir di bahu jalan
+aksi_penutup: parkir yang benar
+preset: standar               # ±90 dtk
+platform: [tiktok, reels]
+suara:
+  engine: premium             # ElevenLabs lewat API (kunci ada di server utama; jangan dicetak atau dikirim ke chat)
+  penyedia: elevenlabs
+  id: TnhigSuEbLfRMVdZNHmu    # suara "Sopeng" di akun ElevenLabs
+  model: eleven_v4
+  kecepatan: "+0%"
+musik:
+  pakai: false
+  file: null
+  lisensi: null
+handle: ""
+catatan: >
+  Jangan sebut nama kota tertentu di suara dan caption: pakai "kotamu" dan "kota besar kita".
+  Kartu Sumber boleh menyebut lembaga dan cakupan data apa adanya (mis. wilayah Jabodetabek).
+  Caption posting tidak memakai kata "satire" atau "sindiran" (preferensi Sopeng).

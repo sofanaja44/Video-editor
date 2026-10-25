@@ -1,5 +1,10 @@
 # Menyambungkan server GPU ke Claude (Remote Control)
 
+> **Cara yang dipakai sekarang** bukan menjalankan Claude Code di server GPU, melainkan mengendalikan server GPU
+> sewaan dari server utama lewat `bash andai/gpu/gpu.sh` (kunci SSH, kirim kode, jalankan, ambil hasil). Server GPU
+> boleh mati atau diganti; semua aset tersimpan di server utama. Lihat [`PINDAH-SERVER.md`](PINDAH-SERVER.md).
+> Panduan Remote Control di bawah tetap berlaku bila Anda memang ingin menjalankan Claude Code langsung di server GPU.
+
 Sesi cloud Claude Code tidak bisa masuk ke server lewat SSH (jaringannya hanya meneruskan HTTPS). Jadi
 caranya dibalik: Claude Code dijalankan **di server GPU**, lalu disambungkan ke aplikasi Claude lewat
 Remote Control. Claude bekerja langsung di server dan memakai GPU-nya.
